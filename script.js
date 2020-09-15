@@ -52,7 +52,7 @@ function displayData () {
  }
 
  const initLocalStorage = () => { 
-  const bookList = JSON.parse(localStorage.getItem('newsData.data.json'));
+  const bookList = JSON.parse(localStorage.getItem('newsData'));
   if(bookList) {
      newsData = bookList;
   }
@@ -60,7 +60,7 @@ function displayData () {
  };
  
  const updateLocalStorage = () => {
-     localStorage.setItem('newsData', JSON.stringify(newsData.data.json));
+     localStorage.setItem('newsData', JSON.stringify(newsData));
  };
 
 form.addEventListener('listUpdated' , showBirthdays);

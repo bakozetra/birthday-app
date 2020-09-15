@@ -4,8 +4,37 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>TEST</title>
+		<link rel="stylesheet" href="./index.css">
 	</head>
 	<body>
+		<main>
+			<form>
+				<fieldset>
+					<label for="firstname">First Name</label>
+					<input type="text" name="firstname" id="firstname">
+				</fieldset>
+				<fieldset>
+					<label for="lastname">Last name</label>
+					<input type="text" name="lastname" id="lastname">
+				</fieldset>
+				<fieldset> 
+					<label for="birthday">Birthday</label>
+					<input type="text" name="birthday" id="birthday">
+				</fieldset>
+			  <fieldset>
+					<label for="image">Image</label>
+					<input type="text" name="image">
+				</fieldset>
+				<fieldset>
+        	<button type="submit">Add</button>
+				</fieldset>
+			
+			</form>
+			<table>
+				<tbody id="myData">
+				</tbody>
+			</table>
+		</main>
 		<script src="script.js"></script>
 	</body>
 </html>

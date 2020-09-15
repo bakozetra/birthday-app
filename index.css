@@ -1,0 +1,23 @@
+/* @import url('https://fonts.googleapis.com/css?family=Inter:400|Poppins:400');
+tr {
+  display: flex;
+  flex-direction: row;
+} */
+img {
+  border-radius: 50%;
+}
+html {
+  width: 100%;
+} 
+tr {
+	display: grid;
+	grid-auto-flow: column;
+	grid-template-columns: repeat(5, minmax(200px, 1fr));
+	place-items: center center;
+	gap: 20px;
+	padding: 1rem 2rem;
+}
+form {
+  display: flex;
+  
+}

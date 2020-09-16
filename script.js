@@ -1,23 +1,20 @@
-let newsData=[];
-
-//fetch on load
-window.addEventListener('load', getData);
-
-function getData() {
-  fetch('people.json')
-  .then(response => response.json())
-  .then(data => newsData = data)
-  .then(displayData)
-  .catch(error => notifyUser(error))
+// Fetch the data
+async function getData() {
+  const response = await fetch('people.json');
+  const data = await response.json();
+  return data;
 }
+
 getData();
-console.log(getData());
 const tbody = document.querySelector('tbody');
 const form = document.querySelector('form');
 
-function displayData () {
- console.log(newsData);
-  const html = newsData.map((person, index) => `
+let newData = [];
+async function displayData () {
+ newData  = await getData();
+ console.log(newData); 
+ const newDataSort = v=newData.sort((a,b) => a.birthday - b.birthday);
+  const html = newDataSort.map((person, index) => `
   <tr data-id="${person.id}" class="${index % 2 ? 'even' : ''}">
       <td><img src="${person.picture}" alt="${person.firstName + ' ' + person.lastName}"/></td>
       <td>${person.lastName}</td>
@@ -35,7 +32,9 @@ function displayData () {
  `
  ).join('');
   tbody.innerHTML = html;
+  tbody.dispatchEvent(new CustomEvent('listUpdated'));
  }
+ displayData();
  
  const showBirthdays = e => {
    e.preventDefault();
@@ -47,24 +46,27 @@ function displayData () {
     birthday: formEl.birthday.value,
     id : Date.now()
    }
- newsData.push(newBirthday);
+ newData.push(newBirthday);
  tbody.dispatchEvent(new CustomEvent('listUpdated'));
  }
 
  const initLocalStorage = () => { 
-  const bookList = JSON.parse(localStorage.getItem('newsData'));
-  if(bookList) {
-     newsData = bookList;
+  const birthdayList = JSON.parse(localStorage.getItem('newData'));
+  if(birthdayList) {
+     newData = birthdayList;
+  }
+  else {
+      newData = [];
   }
   tbody.dispatchEvent(new CustomEvent ('listUpdated'));
  };
  
  const updateLocalStorage = () => {
-     localStorage.setItem('newsData', JSON.stringify(newsData));
+     localStorage.setItem('newData', JSON.stringify(newData));
  };
 
 form.addEventListener('listUpdated' , showBirthdays);
-window.addEventListener('DOMContentLoaded', showBirthdays);
+// window.addEventListener('DOMContentLoaded', showBirthdays);
 tbody.addEventListener('listUpdated', updateLocalStorage)
  initLocalStorage();
 

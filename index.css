@@ -81,3 +81,13 @@ form {
 .popup.open fieldset {
 	--scale: 1;
 }
+.icon {
+	display: flex;
+	
+}
+button img {
+	width : 30px;
+}
+button {
+	margin-right: 2rem;
+}

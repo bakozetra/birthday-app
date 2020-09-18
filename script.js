@@ -12,9 +12,6 @@ async function getData() {
     let people = [];
     people = data;
     console.log(people)
-
-    // dispaly data function
-
     function displayData() {
         const newDataSort = people.sort((a, b) => a.birthday - b.birthday);
         const html = newDataSort.map((person, index) => `
@@ -47,6 +44,7 @@ async function getData() {
             firstName: formEl.firstname.value,
             birthday: formEl.birthday.value,
             picture: formEl.image.value,
+            id: Date.now(),
         }
 
         people.push(newBirthday);
@@ -68,7 +66,7 @@ async function getData() {
 
     // Function that handle the edit form (editBirthday)
     const editBirthday = id => {
-        const birthdayId = people.find((birthday => birthday.id === id));
+        const birthdayId = people.find((birthday => birthday.id == id));
         console.log(birthdayId);
         const result = editBirthdayPopup(birthdayId);
         if (result) {
@@ -125,57 +123,36 @@ async function getData() {
         });
     };
 
-    const deleteBirthday = id => {
-        const person = people.find(person => person.id === id);
-        console.log(id);
-        const result = deleteBirthdayPopup(person);
-        if (result) {
-            people = people.filter(person => person.id !== result.id);
-            displayData(people);
-        }
-    };
 
-    const deleteBirthdayPopup = person => {
-        return new Promise(async resolve => {
-            // create the html form
-            const popup = document.createElement('form');
-            popup.classList.add('popup');
-            popup.insertAdjacentHTML(
-                'afterbegin',
-           `<fieldset>
-              <h3>Delete ${person.firstName} ${person.lastName}</h3>
-              <p>Are you sure you want to delete this person from the list?</p>
-              <button type="submit">Delete</button>
-            </fieldset>`);
 
-            const skipButton = document.createElement('button');
-            skipButton.type = 'button'; // so it doesn't submit
-            skipButton.textContent = 'Cancel';
-            popup.firstElementChild.appendChild(skipButton);
-            skipButton.addEventListener(
-                'click',
-                () => {
-                    resolve(null);
-                    destroyPopup(popup);
-                },
-                { once: true }
-            );
-
-            popup.addEventListener(
-                'submit',
-                e => {
-                    e.preventDefault();
-                    // popup.input.value;
-                    displayData(people);
-                    resolve(person);
-                    destroyPopup(popup);
-                },
-                { once: true }
-            );
-            document.body.appendChild(popup);
-            await wait(50);
-            popup.classList.add('open');
-        });
+    const deleteBirthdayPopup = id => {
+        //(If I use double equals, it doesn't filter)
+        const personsToKeep = people.filter(person => person.id != id);
+        // Show a warning before the user decides
+        let deleteContainerPopup = document.createElement('div');
+        deleteContainerPopup.classList.add('popup');
+        deleteContainerPopup.insertAdjacentHTML('afterbegin', `
+        <fieldset>
+                <h3>Delete ${id.firstName} ${id.lastName}</h3>
+                <p>Are you sure you want to delete this person from the list?</p>
+                <button type="submit" class ='delete'>Delete</button>
+                <button class ="delete" type = "delete"></button>
+            </fieldset>
+    `);
+     
+        document.body.appendChild(deleteContainerPopup)
+        deleteContainerPopup.classList.add("open");
+        // Look for the confirm delete button and delete it
+        deleteContainerPopup.addEventListener("click", (e) => {
+            e.preventDefault()
+            const confirmDeleteButton = e.target.closest("button.delete");
+            if (confirmDeleteButton) {
+                people = personsToKeep;
+                displayData(people);
+                destroyPopup(deleteContainerPopup);
+                tbody.dispatchEvent(new CustomEvent('updateList'));
+            }
+        })
     };
 
     const handleClick = e => {
@@ -189,7 +166,7 @@ async function getData() {
             const deleteButton = e.target.closest('tr');
             const idToDelete = deleteButton.dataset.id;
             console.log(idToDelete);
-            deleteBirthday(idToDelete);
+            deleteBirthdayPopup(idToDelete);
         }
     }
     form.addEventListener('submit', birthdays);

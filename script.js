@@ -1,19 +1,26 @@
-// const wait = (amount = 0) => new Promise(resolve => setTimeout(resolve, amount));
+//Set the function for the  promise.
 function wait(ms = 0) {
     return new Promise(resolve => setTimeout(resolve, ms))
 }
+
 const endpoint = `people.json`;
+// Grab the element from html
 const tbody = document.querySelector('tbody');
 const form = document.querySelector('.form');
 //fuction that handle every function we need
 async function getData() {
+    // fetch file of people
     const response = await fetch('people.json');
     const data = await response.json();
+    // empty array to store everything
     let people = [];
     people = data;
     console.log(people)
+
     function displayData() {
+        //Sort people’s birthdays from the youngest to the oldest.
         const newDataSort = people.sort((a, b) => a.birthday - b.birthday);
+        //created html and  map the newDataSort.
         const html = newDataSort.map((person, index) => `
     <tr data-id="${person.id}" class="${index % 2 ? 'even' : ''}">
       <td><img src="${person.picture}" alt="${person.firstName + ' ' + person.lastName}"/></td>
@@ -72,8 +79,8 @@ async function getData() {
         if (result) {
             displayData(result);
         }
-
     }
+
     const editBirthdayPopup = person => {
         return new Promise(async resolve => {
             const popup = document.createElement('form');
@@ -89,7 +96,7 @@ async function getData() {
               <label>Birthday</label>
               <input type="text" name="birthday"  value="${person.birthday}"/>
               <button type="submit">Submit</button>
-          </fieldset>`);
+            </fieldset>`);
 
             const skipButton = document.createElement('button');
             skipButton.type = 'button'; // so it doesn't submit
@@ -124,37 +131,39 @@ async function getData() {
     };
 
 
-
+    // Function for the delete the about the people .
     const deleteBirthdayPopup = id => {
-        //(If I use double equals, it doesn't filter)
-        const personsToKeep = people.filter(person => person.id != id);
-        // Show a warning before the user decides
-        let deleteContainerPopup = document.createElement('div');
-        deleteContainerPopup.classList.add('popup');
-        deleteContainerPopup.insertAdjacentHTML('afterbegin', `
-        <fieldset>
+        const filterIdOfPeople = people.filter(person => person.id != id);
+        let deleteDiv = document.createElement('div');
+        deleteDiv.classList.add('popup');
+        deleteDiv.insertAdjacentHTML('afterbegin', `
+            <fieldset>
                 <h3>Delete ${id.firstName} ${id.lastName}</h3>
                 <p>Are you sure you want to delete this person from the list?</p>
                 <button type="submit" class ='delete'>Delete</button>
-                <button class ="delete" type = "delete"></button>
+                <button type = "button" class ="cancel-delete">Cancel</button>
             </fieldset>
     `);
-     
-        document.body.appendChild(deleteContainerPopup)
-        deleteContainerPopup.classList.add("open");
-        // Look for the confirm delete button and delete it
-        deleteContainerPopup.addEventListener("click", (e) => {
+    
+        document.body.appendChild(deleteDiv)
+        deleteDiv.classList.add("open");
+        deleteDiv.addEventListener("click", (e) => {
             e.preventDefault()
-            const confirmDeleteButton = e.target.closest("button.delete");
-            if (confirmDeleteButton) {
-                people = personsToKeep;
+            const deleteButon = e.target.closest("button.delete");
+            if (deleteButon) {
+                people = filterIdOfPeople;
                 displayData(people);
-                destroyPopup(deleteContainerPopup);
+                destroyPopup(deleteDiv);
                 tbody.dispatchEvent(new CustomEvent('updateList'));
+            }
+            const cancelButton = e.target.closest("button.cancel-delete");
+            if(cancelButton) {
+              deleteDiv.classList.remove("open");
             }
         })
     };
 
+    // fuction to check the target 
     const handleClick = e => {
         if (e.target.closest('button.edit')) {
             const editButton = e.target.closest('tr');
@@ -171,6 +180,7 @@ async function getData() {
     }
     form.addEventListener('submit', birthdays);
     tbody.addEventListener('click', handleClick);
+    // Stored the data inside of the local storage. 
     const initLocalStorage = () => {
         const birthdayList = JSON.parse(localStorage.getItem('people'));
         if (birthdayList) {
@@ -178,7 +188,7 @@ async function getData() {
         }
         tbody.dispatchEvent(new CustomEvent('listUpdated'));
     };
-
+    // update the local storage 
     const updateLocalStorage = () => {
         localStorage.setItem('people', JSON.stringify(people));
     };
@@ -188,4 +198,5 @@ async function getData() {
     initLocalStorage();
     displayData();
 }
+
 getData();

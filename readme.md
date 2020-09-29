@@ -40,3 +40,44 @@ Once you're finished with the functionality, try to make your app more appealing
 Be creative 🎨
 
 Good Luck
+
+
+## Import report :
+### 1) In a few sentences, explain the structure of your project.
+add an html on the file of the html.
+Add  html in the html file:
+
+ I have created one function which names is getData and I put all of my work on it. There  are 
+9 function on it. 
+
+Firstly , I fetch the “people.json” and create an  empty array . After that there is a function which contains sort() and map() the empty array. 
+
+Then ,  the third function is about how to get the input from the add button  from the html.
+After that I created a function which name is destroyPopup .It is about removing the open modal. 
+
+Following the third function, there are two functions , they are about editing people's birthdays . I use find() to find the id of each person. I created a html on the function to show the edit input with submit button and cancel button.. 
+
+Then two functions are about deleted tr , I use filters to get the people array. 
+
+When everything is finished I put them in localStorage.
+
+### 2) If you had more time, what area of your project would you improve?
+I would like to continue my code because I want to work on the date of people’s birthday.
+
+### 3) Did you learn anything new while working on this project?
+ I have learn how to pass the argument and when should I pass it.
+ I understood a little bit about promises but I am not really there yet.
+ 
+### 4) What was the most challenging part for you?
+
+ I was really struggling on the editing and deleting of the **<****tr****>**.
+
+### 5) Would you like a new explanation about a specific topic?
+ 
+I woould like if you can explain more about the Promise.
+
+## 6) Any other comments?
+Everyting is Ok.
+
+
+

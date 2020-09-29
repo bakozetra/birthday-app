@@ -23,9 +23,13 @@ async function getData() {
         //created html and  map the newDataSort.
         const html = newDataSort.map((person, index) => `
     <tr data-id="${person.id}" class="${index % 2 ? 'even' : ''}">
-      <td><img src="${person.picture}" alt="${person.firstName + ' ' + person.lastName}"/></td>
-      <td>${person.lastName} ${person.firstName}</td>
-      <td>${person.birthday}</td>
+      <td><img src="${person.picture}" alt="${person.firstName + ' ' + person.lastName}"/>      </td>
+      <td>${person.lastName} ${person.firstName}
+         <p>turns  on th</p>
+      </td>
+      <td>${person.birthday}
+      </td>
+      
       <td class= "icon">
           <button class="edit">
             <img src="./icon-edit-image.png" alt="">
@@ -94,7 +98,7 @@ async function getData() {
               <label>Firstname</label>
               <input type="text" name="firstName" value="${person.firstName}"/>
               <label>Birthday</label>
-              <input type="text" name="birthday"  value="${person.birthday}"/>
+              <input type="date" id="start" name="tripStart"value="2000-01-01" min="2000-01-01" max="2020-12-31">
               <button type="submit">Submit</button>
             </fieldset>`);
 
@@ -117,7 +121,7 @@ async function getData() {
                     e.preventDefault();
                     person.lastName = e.target.lastName.value;
                     person.firstName = e.target.firstName.value;
-                    person.birthday = e.target.birthday.value;
+                    person.birthday = e.target.tripStart.value;
                     resolve(person);
                     destroyPopup(popup);
                 },

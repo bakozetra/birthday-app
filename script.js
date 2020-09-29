@@ -3,7 +3,9 @@ function wait(ms = 0) {
     return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+
 const endpoint = `people.json`;
+
 // Grab the element from html
 const tbody = document.querySelector('tbody');
 const form = document.querySelector('.form');
@@ -19,13 +21,21 @@ async function getData() {
 
     function displayData() {
         //Sort people’s birthdays from the youngest to the oldest.
-        const newDataSort = people.sort((a, b) => a.birthday - b.birthday);
+        const newDataSort = people.sort((a, b) => b.birthday - a.birthday);
         //created html and  map the newDataSort.
-        const html = newDataSort.map((person, index) => `
+        const html = newDataSort.map((person, index) => {
+            function calculate_age(dob) { 
+                var diff_ms = Date.now() - dob.getTime();
+                var age_dt = new Date(diff_ms); 
+                return Math.abs(age_dt.getUTCFullYear() - 1970);
+            }
+            
+            const year = calculate_age(new Date(person.birthday));
+        return `
     <tr data-id="${person.id}" class="${index % 2 ? 'even' : ''}">
       <td><img src="${person.picture}" alt="${person.firstName + ' ' + person.lastName}"/>      </td>
       <td>${person.lastName} ${person.firstName}
-         <p>turns  on th</p>
+         <p>Turns ${year} year on  </p>
       </td>
       <td>${person.birthday}
       </td>
@@ -40,7 +50,7 @@ async function getData() {
       </td>
     </tr>
   `
-        ).join('');
+        }).join('');
         tbody.innerHTML = html;
         tbody.dispatchEvent(new CustomEvent('listUpdated'));
     }
@@ -148,7 +158,7 @@ async function getData() {
                 <button type = "button" class ="cancel-delete">Cancel</button>
             </fieldset>
     `);
-    
+
         document.body.appendChild(deleteDiv)
         deleteDiv.classList.add("open");
         deleteDiv.addEventListener("click", (e) => {
@@ -161,8 +171,8 @@ async function getData() {
                 tbody.dispatchEvent(new CustomEvent('updateList'));
             }
             const cancelButton = e.target.closest("button.cancel-delete");
-            if(cancelButton) {
-              deleteDiv.classList.remove("open");
+            if (cancelButton) {
+                deleteDiv.classList.remove("open");
             }
         })
     };
@@ -201,6 +211,7 @@ async function getData() {
     tbody.addEventListener('listUpdated', updateLocalStorage);
     initLocalStorage();
     displayData();
+
 }
 
 getData();

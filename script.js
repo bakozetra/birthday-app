@@ -75,10 +75,10 @@ async function getData() {
             //     var age = years + ' years ' + months + ' months ' + days + ' days';
             //     return age;
             // }
-            
-            function calculate_age(dob) { 
+
+            function calculate_age(dob) {
                 var diff_ms = Date.now() - dob.getTime();
-                var age_dt = new Date(diff_ms); 
+                var age_dt = new Date(diff_ms);
                 return Math.abs(age_dt.getUTCFullYear() - 1970);
             }
             const year = calculate_age(new Date(person.birthday));
@@ -93,7 +93,8 @@ async function getData() {
             return `
     <tr data-id="${person.id}" class="${index % 2 ? 'even' : ''}">
       <td><img src="${person.picture}" alt="${person.firstName + ' ' + person.lastName}"/>      </td>
-      <td>${person.lastName} ${person.firstName}
+      <td>
+      <h3>${person.lastName} ${person.firstName}</h3>
          <p>Turns ${year} on ${month} on ${dayBirthday} th </p>
       </td>
       <td>${person.birthday}
@@ -126,7 +127,6 @@ async function getData() {
             picture: formEl.image.value,
             id: Date.now(),
         }
-
         people.push(newBirthday);
         console.log(people);
         displayData();
@@ -206,6 +206,7 @@ async function getData() {
 
     // Function for the delete the about the people .
     const deleteBirthdayPopup = id => {
+        console.log(id);
         const filterIdOfPeople = people.filter(person => person.id != id);
         let deleteDiv = document.createElement('div');
         deleteDiv.classList.add('popup');

@@ -1,15 +1,10 @@
-/* @import url('https://fonts.googleapis.com/css?family=Inter:400|Poppins:400');
-tr {
-  display: flex;
-  flex-direction: row;
-} */
+
 img {
   border-radius: 50%;
 }
 
 html {
 	width: 100%;
-	
 } 
 main {
 	width: 80%;
@@ -142,6 +137,18 @@ button {
 button:hover {
 	color: turquoise;
 }
+.edit ,.delete{
+	background-color:#ffd803;
+	cursor: pointer;
+	border-radius: 10px;
+}
+.delete:hover{
+ background-color: tomato;
+}
+.edit:hover{
+ background-color: yellowgreen;
+}
+
 /* h1 {
 	text-align: center;
 } */

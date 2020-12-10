@@ -128,9 +128,10 @@ function wait() {
   return new Promise(function (resolve) {
     return setTimeout(resolve, ms);
   });
-}
+} // import endpoint from "./people.json" ;
+// console.log( endpoint);
+// Grab the element from html
 
-var endpoint = "people.json"; // Grab the element from html
 
 var tbody = document.querySelector('tbody');
 var form = document.querySelector('.form'); //fuction that handle every function we need
@@ -185,53 +186,6 @@ function _getData() {
               }); //created html and  map the newDataSort.
 
               var html = newDataSort.map(function (person, index) {
-                // function getAge(dateString) {
-                //     var today = new Date();
-                //     var DOB = new Date(dateString);
-                //     var totalMonths = (today.getFullYear() - DOB.getFullYear()) * 12 + today.getMonth() - DOB.getMonth();
-                //     totalMonths += today.getDay() < DOB.getDay() ? -1 : 0;
-                //     var years = today.getFullYear() - DOB.getFullYear();
-                //     if (DOB.getMonth() > today.getMonth())
-                //         years = years - 1;
-                //     else if (DOB.getMonth() === today.getMonth())
-                //         if (DOB.getDate() > today.getDate())
-                //             years = years - 1;
-                //     var days;
-                //     var months;
-                //     if (DOB.getDate() > today.getDate()) {
-                //         months = (totalMonths % 12);
-                //         if (months == 0)
-                //             months = 11;
-                //         var x = today.getMonth();
-                //         switch (x) {
-                //             case 1:
-                //             case 3:
-                //             case 5:
-                //             case 7:
-                //             case 8:
-                //             case 10:
-                //             case 12: {
-                //                 var a = DOB.getDate() - today.getDate();
-                //                 days = 31 - a;
-                //                 break;
-                //             }
-                //             default: {
-                //                 var a = DOB.getDate() - today.getDate();
-                //                 days = 30 - a;
-                //                 break;
-                //             }
-                //         }
-                //     }
-                //     else {
-                //         days = today.getDate() - DOB.getDate();
-                //         if (DOB.getMonth() === today.getMonth())
-                //             months = (totalMonths % 12);
-                //         else
-                //             months = (totalMonths % 12) + 1;
-                //     }
-                //     var age = years + ' years ' + months + ' months ' + days + ' days';
-                //     return age;
-                // }
                 function calculate_age(dob) {
                   var diff_ms = Date.now() - dob.getTime();
                   var age_dt = new Date(diff_ms);
@@ -239,24 +193,33 @@ function _getData() {
                 }
 
                 var year = calculate_age(new Date(person.birthday));
+                year = year + 1;
                 var newDate = new Date(person.birthday);
                 var month = newDate.toLocaleString('default', {
                   month: 'long'
                 });
-                var dayBirthday = newDate.getDate(); // function calculate_month (month){
-                //     var diff_ms = Date.now() - month.getTime();
-                //     var month_dt = new Date(diff_ms); 
-                //     return Math.abs(age_dt.)
-                // }
+                var dayBirthday = newDate.getDate(); // calculate birday day in between
 
-                return "\n    <tr data-id=\"".concat(person.id, "\" class=\"").concat(index % 2 ? 'even' : '', "\">\n      <td><img src=\"").concat(person.picture, "\" alt=\"").concat(person.firstName + ' ' + person.lastName, "\"/>      </td>\n      <td>").concat(person.lastName, " ").concat(person.firstName, "\n         <p>Turns ").concat(year, " on ").concat(month, " on ").concat(dayBirthday, " th </p>\n      </td>\n      <td>").concat(person.birthday, "\n      </td>\n      \n      <td class= \"icon\">\n          <button class=\"edit\">\n            <img src=\"./icon-edit-image.png\" alt=\"\">\n          </button>\n          <button class=\"delete\">\n            <img src=\"./icon-delete-image.jpg\" alt=\"\">\n          </button>\n      </td>\n    </tr>\n  ");
+                var birthday = new Date(person.birthday);
+                var today = new Date(); //Set current year or the next year if you already had birthday this year
+
+                birthday.setFullYear(today.getFullYear());
+
+                if (today > birthday) {
+                  birthday.setFullYear(today.getFullYear() + 1);
+                } //Calculate difference between days
+
+
+                var daysTobirthday = Math.floor((birthday - today) / (1000 * 60 * 60 * 24));
+                console.log(daysTobirthday);
+                return "\n    <tr data-id=\"".concat(person.id, "\" class=\"").concat(index % 2 ? 'even' : '', "\">\n      <td><img src=\"").concat(person.picture, "\" alt=\"").concat(person.firstName + ' ' + person.lastName, "\"/>      </td>\n      <td>\n      <h3>").concat(person.lastName, " ").concat(person.firstName, "</h3>\n         <p>Turns ").concat(year, " on ").concat(month, " on ").concat(dayBirthday, " th </p>\n      </td>\n      <td>\n      ").concat(daysTobirthday === 0 ? "\uD83C\uDF82\uD83C\uDF82\uD83C\uDF82" : "\uD83C\uDF82 in ".concat(daysTobirthday, " days"), "\n      </td>\n      \n      <td class= \"icon\">\n          <button class=\"edit\">\n            <img src=\"./svg/edit.svg\" alt=\"\">\n          </button>\n          <button class=\"delete\">\n            <img src=\"./svg/delete.svg\" alt=\"\">\n          </button>\n      </td>\n    </tr>\n  ");
               }).join('');
               tbody.innerHTML = html;
               tbody.dispatchEvent(new CustomEvent('listUpdated'));
             };
 
             _context3.next = 5;
-            return fetch('people.json');
+            return fetch('https://gist.githubusercontent.com/Pinois/e1c72b75917985dc77f5c808e876b67f/raw/93debb7463fbaaec29622221b8f9e719bd5b119f/birthdayPeople.json');
 
           case 5:
             response = _context3.sent;
@@ -311,36 +274,34 @@ function _getData() {
                         case 0:
                           popup = document.createElement('form');
                           popup.classList.add('popup');
-                          popup.insertAdjacentHTML('afterbegin', "<fieldset>\n              <h3>Edit</h3>\n              <label>Lastname</label>\n              <input type=\"text\" name=\"lastName\" value=\"".concat(person.lastName, "\"/>\n              <label>Firstname</label>\n              <input type=\"text\" name=\"firstName\" value=\"").concat(person.firstName, "\"/>\n              <label>Birthday</label>\n              <input type=\"date\" id=\"start\" name=\"tripStart\"value=\"2000-01-01\" min=\"2000-01-01\" max=\"2020-12-31\">\n              <button type=\"submit\">Submit</button>\n            </fieldset>"));
+                          popup.innerHTML = "<fieldset>\n              <h3>Edit</h3>\n              <label>Lastname</label>\n              <input type=\"text\" name=\"lastName\" value=\"".concat(person.lastName, "\"/>\n              <label>Firstname</label>\n              <input type=\"text\" name=\"firstName\" value=\"").concat(person.firstName, "\"/>\n              <label>Birthday</label>\n              <input type=\"date\" id=\"start\" name=\"tripStart\"value=\"2000-01-01\" min=\"2000-01-01\" max=\"2020-12-31\">\n              <button type=\"submit\">Submit</button>\n            </fieldset>");
                           skipButton = document.createElement('button');
                           skipButton.type = 'button'; // so it doesn't submit
 
                           skipButton.textContent = 'Cancel';
                           popup.firstElementChild.appendChild(skipButton);
+                          document.body.appendChild(popup); // await wait(10);
+
+                          popup.classList.add('open');
+                          popup.addEventListener('submit', function (e) {
+                            e.preventDefault();
+                            person.lastName = e.target.lastName.value;
+                            person.firstName = e.target.firstName.value;
+                            person.birthday = e.target.tripStart.value;
+                            resolve();
+                            displayData();
+                            destroyPopup(popup);
+                          }, {
+                            once: true
+                          });
                           skipButton.addEventListener('click', function () {
                             resolve(null);
                             destroyPopup(popup);
                           }, {
                             once: true
                           });
-                          popup.addEventListener('submit', function (e) {
-                            e.preventDefault();
-                            person.lastName = e.target.lastName.value;
-                            person.firstName = e.target.firstName.value;
-                            person.birthday = e.target.tripStart.value;
-                            resolve(person);
-                            destroyPopup(popup);
-                          }, {
-                            once: true
-                          });
-                          document.body.appendChild(popup);
-                          _context.next = 12;
-                          return wait(10);
 
-                        case 12:
-                          popup.classList.add('open');
-
-                        case 13:
+                        case 11:
                         case "end":
                           return _context.stop();
                       }
@@ -463,7 +424,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53072" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62427" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

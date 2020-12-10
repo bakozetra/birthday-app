@@ -7,7 +7,7 @@ function wait(ms = 0) {
 // console.log( endpoint);
 
 // Grab the element from html
-const tbody = document.querySelector('tbody');
+const tbody = document.querySelector('ul');
 const form = document.querySelector('.form');
 //fuction that handle every function we need
 async function getData() {
@@ -48,25 +48,23 @@ async function getData() {
             const daysTobirthday = Math.floor((birthday - today) / (1000 * 60 * 60 * 24))
             console.log(daysTobirthday);
             return `
-    <tr data-id="${person.id}" class="${index % 2 ? 'even' : ''}">
-      <td><img src="${person.picture}" alt="${person.firstName + ' ' + person.lastName}"/>      </td>
-      <td>
-      <h3>${person.lastName} ${person.firstName}</h3>
-         <p>Turns ${year} on ${month} on ${dayBirthday} th </p>
-      </td>
-      <td>
-      ${daysTobirthday === 0 ? `🎂🎂🎂` : `🎂 in ${daysTobirthday} days`}
-      </td>
-      
-      <td class= "icon">
+    <li data-id="${person.id}" class="${index % 2 ? 'even' : ''}">
+     <img src="${person.picture}" alt="${person.firstName + ' ' + person.lastName}"/>
+     <div>
+      <h3 class ="name">${person.lastName} ${person.firstName}</h3>
+      <p class="age">Turns ${year} on ${month} on ${dayBirthday} th </p>
+      </div>
+      <p class="day">
+      ${daysTobirthday === 0 ? `🎂🎂🎂` : `in ${daysTobirthday} days`}</p>
+      <div class= "icon">
           <button class="edit">
             <img src="./svg/edit.svg" alt="">
           </button>
           <button class="delete">
             <img src="./svg/delete.svg" alt="">
           </button>
-      </td>
-    </tr>
+      </div>
+    </li>
   `
         }).join('');
         tbody.innerHTML = html;

@@ -133,7 +133,7 @@ function wait() {
 // Grab the element from html
 
 
-var tbody = document.querySelector('tbody');
+var tbody = document.querySelector('ul');
 var form = document.querySelector('.form'); //fuction that handle every function we need
 
 function getData() {
@@ -212,7 +212,7 @@ function _getData() {
 
                 var daysTobirthday = Math.floor((birthday - today) / (1000 * 60 * 60 * 24));
                 console.log(daysTobirthday);
-                return "\n    <tr data-id=\"".concat(person.id, "\" class=\"").concat(index % 2 ? 'even' : '', "\">\n      <td><img src=\"").concat(person.picture, "\" alt=\"").concat(person.firstName + ' ' + person.lastName, "\"/>      </td>\n      <td>\n      <h3>").concat(person.lastName, " ").concat(person.firstName, "</h3>\n         <p>Turns ").concat(year, " on ").concat(month, " on ").concat(dayBirthday, " th </p>\n      </td>\n      <td>\n      ").concat(daysTobirthday === 0 ? "\uD83C\uDF82\uD83C\uDF82\uD83C\uDF82" : "\uD83C\uDF82 in ".concat(daysTobirthday, " days"), "\n      </td>\n      \n      <td class= \"icon\">\n          <button class=\"edit\">\n            <img src=\"./svg/edit.svg\" alt=\"\">\n          </button>\n          <button class=\"delete\">\n            <img src=\"./svg/delete.svg\" alt=\"\">\n          </button>\n      </td>\n    </tr>\n  ");
+                return "\n    <li data-id=\"".concat(person.id, "\" class=\"").concat(index % 2 ? 'even' : '', "\">\n     <img src=\"").concat(person.picture, "\" alt=\"").concat(person.firstName + ' ' + person.lastName, "\"/>\n     <div>\n      <h3 class =\"name\">").concat(person.lastName, " ").concat(person.firstName, "</h3>\n      <p class=\"age\">Turns ").concat(year, " on ").concat(month, " on ").concat(dayBirthday, " th </p>\n      </div>\n      <p class=\"day\">\n      ").concat(daysTobirthday === 0 ? "\uD83C\uDF82\uD83C\uDF82\uD83C\uDF82" : "in ".concat(daysTobirthday, " days"), "</p>\n      <div class= \"icon\">\n          <button class=\"edit\">\n            <img src=\"./svg/edit.svg\" alt=\"\">\n          </button>\n          <button class=\"delete\">\n            <img src=\"./svg/delete.svg\" alt=\"\">\n          </button>\n      </div>\n    </li>\n  ");
               }).join('');
               tbody.innerHTML = html;
               tbody.dispatchEvent(new CustomEvent('listUpdated'));
@@ -424,7 +424,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62427" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64774" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

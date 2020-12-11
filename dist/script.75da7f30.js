@@ -128,9 +128,7 @@ function wait() {
   return new Promise(function (resolve) {
     return setTimeout(resolve, ms);
   });
-} // import endpoint from "./people.json" ;
-// console.log( endpoint);
-// Grab the element from html
+} // Grab the element from html
 
 
 var tbody = document.querySelector('ul');
@@ -212,7 +210,7 @@ function _getData() {
 
                 var daysTobirthday = Math.floor((birthday - today) / (1000 * 60 * 60 * 24));
                 console.log(daysTobirthday);
-                return "\n    <li data-id=\"".concat(person.id, "\" class=\"").concat(index % 2 ? 'even' : '', "\">\n     <img src=\"").concat(person.picture, "\" alt=\"").concat(person.firstName + ' ' + person.lastName, "\"/>\n     <div>\n      <h3 class =\"name\">").concat(person.lastName, " ").concat(person.firstName, "</h3>\n      <p class=\"age\">Turns ").concat(year, " on ").concat(month, " on ").concat(dayBirthday, " th </p>\n      </div>\n      <p class=\"day\">\n      ").concat(daysTobirthday === 0 ? "\uD83C\uDF82\uD83C\uDF82\uD83C\uDF82" : "in ".concat(daysTobirthday, " days"), "</p>\n      <div class= \"icon\">\n          <button class=\"edit\">\n            <img src=\"./svg/edit.svg\" alt=\"\">\n          </button>\n          <button class=\"delete\">\n            <img src=\"./svg/delete.svg\" alt=\"\">\n          </button>\n      </div>\n    </li>\n  ");
+                return "\n    <li data-id=\"".concat(person.id, "\" class=\"").concat(index % 2 ? 'even' : '', "\">\n     <img src=\"").concat(person.picture, "\" alt=\"").concat(person.firstName + ' ' + person.lastName, "\" class =\"person-image\"/>\n     <div>\n      <h3 class =\"name\">").concat(person.lastName, " ").concat(person.firstName, "</h3>\n      <p class=\"age\">Turns ").concat(year, " on ").concat(month, " on ").concat(dayBirthday, " th </p>\n      </div>\n      <p class=\"day\">\n      ").concat(daysTobirthday === 0 ? "\uD83C\uDF82\uD83C\uDF82\uD83C\uDF82" : "in ".concat(daysTobirthday, " days"), "</p>\n      <div class= \"icon\">\n          <button class=\"edit\">\n            <img src=\"./svg/edit.svg\" alt=\"\">\n          </button>\n          <button class=\"delete\">\n            <img src=\"./svg/delete.svg\" alt=\"\">\n          </button>\n      </div>\n    </li>\n  ");
               }).join('');
               tbody.innerHTML = html;
               tbody.dispatchEvent(new CustomEvent('listUpdated'));
@@ -348,14 +346,14 @@ function _getData() {
 
             handleClick = function handleClick(e) {
               if (e.target.closest('button.edit')) {
-                var editButton = e.target.closest('tr');
+                var editButton = e.target.closest('li');
                 var idToEdit = editButton.dataset.id;
                 console.log(idToEdit);
                 editBirthday(idToEdit);
               }
 
               if (e.target.closest('button.delete')) {
-                var deleteButton = e.target.closest('tr');
+                var deleteButton = e.target.closest('li');
                 var idToDelete = deleteButton.dataset.id;
                 console.log(idToDelete);
                 deleteBirthdayPopup(idToDelete);

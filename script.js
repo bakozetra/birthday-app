@@ -3,12 +3,10 @@ function wait(ms = 0) {
     return new Promise(resolve => setTimeout(resolve, ms))
 }
 
-// import endpoint from "./people.json" ;
-// console.log( endpoint);
-
 // Grab the element from html
 const tbody = document.querySelector('ul');
 const form = document.querySelector('.form');
+
 //fuction that handle every function we need
 async function getData() {
     // fetch file of people
@@ -49,7 +47,7 @@ async function getData() {
             console.log(daysTobirthday);
             return `
     <li data-id="${person.id}" class="${index % 2 ? 'even' : ''}">
-     <img src="${person.picture}" alt="${person.firstName + ' ' + person.lastName}"/>
+     <img src="${person.picture}" alt="${person.firstName + ' ' + person.lastName}" class ="person-image"/>
      <div>
       <h3 class ="name">${person.lastName} ${person.firstName}</h3>
       <p class="age">Turns ${year} on ${month} on ${dayBirthday} th </p>
@@ -197,13 +195,13 @@ async function getData() {
     // fuction to check the target 
     const handleClick = e => {
         if (e.target.closest('button.edit')) {
-            const editButton = e.target.closest('tr');
+            const editButton = e.target.closest('li');
             const idToEdit = editButton.dataset.id;
             console.log(idToEdit);
             editBirthday(idToEdit);
         }
         if (e.target.closest('button.delete')) {
-            const deleteButton = e.target.closest('tr');
+            const deleteButton = e.target.closest('li');
             const idToDelete = deleteButton.dataset.id;
             console.log(idToDelete);
             deleteBirthdayPopup(idToDelete);

@@ -26,6 +26,7 @@ ul {
 fieldset {
 	border-radius: 10px;
 	background-color: #fffffe;
+	margin-bottom : 1rem; 
 }
 fieldset:hover {
 	background-color: #ffd803;

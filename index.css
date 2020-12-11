@@ -26,9 +26,10 @@ ul {
 fieldset {
 	border-radius: 10px;
 	background-color: #fffffe;
+	margin-bottom : 1rem; 
 }
 fieldset:hover {
-	background-color: #ffd803;
+	background-color: #ffd803
 }
 input {
 	height: 1.5rem;

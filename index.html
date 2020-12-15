@@ -13,27 +13,26 @@
 			</h1>
 		</header>
 		<main>
-			<form class="form">
-				<fieldset>
-					<label for="firstname">First Name</label>
-					<input type="text" name="firstname" id="firstname">
-				</fieldset>
-				<fieldset>
-					<label for="lastname">Last name</label>
-					<input type="text" name="lastname" id="lastname">
-				</fieldset>
-				<fieldset> 
-					<label for="birthday">Birthday</label>
-					<input type="date" id="birthday" name="birthday" value="2000-01-01" min="2000-01-01" max="2020-12-31">
-				</fieldset>
-			  <fieldset>
-					<label for="image">Image</label>
-					<input type="url" name="image">
-				</fieldset>
-				<fieldset>
-        	<button type="submit">Add</button>
-				</fieldset>
-			</form>
+			<section class="filters">
+				<input class="searchName" type="text" placeholder="Search by name" />
+				<select class="filterMonth">
+					<option value="">Filter by month</option>
+					<option value="0">January</option>
+					<option value="1">February</option>
+					<option value="2">March</option>
+					<option value="3">April</option>
+					<option value="4">May</option>
+					<option value="5">June</option>
+					<option value="6">July</option>
+					<option value="7">August</option>
+					<option value="8">September</option>
+					<option value="9">October</option>
+					<option value="10">November</option>
+					<option value="11">December</option>
+				</select>
+				<button class="addButton">Add somebody</button>
+			</section>
+		
 				<ul id="myData"></ul>
 		</main>
 		<script src="script.js" ></script>

@@ -8,7 +8,7 @@ body {
 }
 
 ul {
-	width: 90%;
+	width: 87%;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 2rem;
@@ -146,7 +146,17 @@ li img {
 	--scale: 0.3;
 	transform: scale(var(--scale));
 }
-
+.popup div {
+	display: grid;
+	background: #fffffe;
+	padding: 2rem;
+	border: 10px solid blue;
+	border-radius: 5px;
+	box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
+	transition: all 0.2s;
+	--scale: 0.3;
+	transform: scale(var(--scale));
+}
 .popup.open {
 	--opacity: 1;
 	pointer-events: all;
@@ -168,6 +178,30 @@ button {
 	background-color: white;
 	outline: none;
 }
+.filters {
+	width: 57%;
+	margin-left: auto;
+	margin-right: auto;
+}
+.addButton {
+	background: #EF4565;
+	width: 158px;
+	height: 50px;
+	border-radius: 5px;
+	color: white;
+	font-size: 18px;
+}
+.searchName , .filterMonth {
+	width: 264px;
+	height: 50px;
+	border-radius: 5px;
+	background-color: white;
+	margin: 0;
+	border: none;
+	margin-right: 35px;
+	outline: none;
+}
+
 button:hover {
 	color: turquoise;
 }
@@ -196,7 +230,7 @@ button:hover {
 		width: 100px;
 	}
 	.edit {
-		margin-right: 0.5rem;
+		margin-right: 20px;
 	}
 	.edit,
 	.delete {
@@ -206,6 +240,19 @@ button:hover {
 	.age,
 	.day {
 		font-size: 1rem;
+	}
+	.day {
+		position: absolute;
+    top: 1rem;
+    right: 35px;
+	}
+	.icon {
+		position: absolute;
+    bottom: 1rem;
+    right: 35px;
+  }
+	.aboutyear {
+		margin-right: auto;
 	}
 	.name {
 		font-size: 1rem;
@@ -218,10 +265,9 @@ button:hover {
 	}
 
 	li {
-		width: 70%;
+		width: 65%;
 		display: flex;
 		place-items: center center;
-		padding: 1rem 2rem;
 		background-color: #fffffe;
 		margin-bottom: 2rem;
 		margin-left: auto;

@@ -5,7 +5,10 @@ function wait(ms = 0) {
 
 // Grab the element from html
 const tbody = document.querySelector('ul');
-const form = document.querySelector('.form');
+const Addbutton = document.querySelector(".addButton")
+console.log(Addbutton);
+const searchNameFilter = document.querySelector('.searchName');
+const filterMonthFilter = document.querySelector('.filterMonth');
 
 //fuction that handle every function we need
 async function getData() {
@@ -17,12 +20,32 @@ async function getData() {
     people = data;
     console.log(people)
 
+    searchNameFilter.addEventListener('input', () => displayData(people));
+    filterMonthFilter.addEventListener('change', () => displayData(people));
+
     function displayData() {
+        let peopleData = [...people];
+        console.log(peopleData);
+        if (searchNameFilter.value !== '') {
+            peopleData = peopleData.filter(person => {
+                const fullNameLowercase =
+                    person.firstName.toLowerCase() + ' ' + person.lastName.toLowerCase();
+                return fullNameLowercase.includes(searchNameFilter.value.toLowerCase());
+            });
+        }
+        if (filterMonthFilter.value !== '') {
+            peopleData = peopleData.filter(person => {
+                let birthday = new Date(person.birthday);
+                return birthday.getMonth() === Number(filterMonthFilter.value);
+            });
+        }
+
+
         //Sort people’s birthdays from the youngest to the oldest.
-        const newDataSort = people.sort((a, b) => b.birthday - a.birthday);
+        const newDataSort = peopleData.slice().sort((a, b) => a.birthday - b.birthday)
+
         //created html and  map the newDataSort.
         const html = newDataSort.map((person, index) => {
-
             function calculate_age(dob) {
                 var diff_ms = Date.now() - dob.getTime();
                 var age_dt = new Date(diff_ms);
@@ -43,14 +66,13 @@ async function getData() {
             }
 
             //Calculate difference between days
-            const daysTobirthday = Math.floor((birthday - today) / (1000 * 60 * 60 * 24))
-            console.log(daysTobirthday);
+            let daysTobirthday = Math.floor((birthday - today) / (1000 * 60 * 60 * 24))
             return `
     <li data-id="${person.id}" class="${index % 2 ? 'even' : ''}">
      <img src="${person.picture}" alt="${person.firstName + ' ' + person.lastName}" class ="person-image"/>
-     <div>
+     <div class = "aboutyear">
       <h3 class ="name">${person.lastName} ${person.firstName}</h3>
-      <p class="age">Turns ${year} on ${month} on ${dayBirthday} th </p>
+      <p class="age">Turns ${year} years on ${month} on ${dayBirthday} th </p>
       </div>
       <p class="day">
       ${daysTobirthday === 0 ? `🎂🎂🎂` : `in ${daysTobirthday} days`}</p>
@@ -71,22 +93,6 @@ async function getData() {
 
     // Function that handle the add data (birthday)
 
-    const birthdays = e => {
-        e.preventDefault();
-        const formEl = e.currentTarget;
-        const newBirthday = {
-            lastName: formEl.lastname.value,
-            firstName: formEl.firstname.value,
-            birthday: formEl.birthday.value,
-            picture: formEl.image.value,
-            id: Date.now(),
-        }
-        people.push(newBirthday);
-        console.log(people);
-        displayData();
-        form.reset();
-        tbody.dispatchEvent(new CustomEvent('listUpdated'));
-    }
 
     async function destroyPopup(popup) {
         popup.classList.remove('open');
@@ -141,7 +147,7 @@ async function getData() {
                     resolve();
                     displayData()
                     destroyPopup(popup);
-                } ,  { once: true }
+                }, { once: true }
             );
 
             skipButton.addEventListener(
@@ -152,10 +158,7 @@ async function getData() {
                 },
                 { once: true }
             );
-
         });
-
-        
     };
 
 
@@ -203,12 +206,67 @@ async function getData() {
         if (e.target.closest('button.delete')) {
             const deleteButton = e.target.closest('li');
             const idToDelete = deleteButton.dataset.id;
-            console.log(idToDelete);
             deleteBirthdayPopup(idToDelete);
         }
     }
-    form.addEventListener('submit', birthdays);
     tbody.addEventListener('click', handleClick);
+
+    const AddPersonPopup = () => {
+        const popup = document.createElement('form');
+        popup.classList.add('popup');
+        popup.innerHTML = `
+            <div>
+            <label for="firstname">First Name</label>
+            <input type="text" name="firstname" id="firstname">
+            <label for="lastname">Last name</label>
+            <input type="text" name="lastname" id="lastname">
+            <label for="birthday">Birthday</label>
+            <input type="date" id="birthday" name="birthday" value="2000-01-01" min="2000-01-01" max="2020-12-31">
+            <label for="image">Image</label>
+            <input type="url" name="image">
+            <button type="submit">Add</button>
+            </div>
+        
+            `
+        document.body.appendChild(popup);
+        // await wait(10);
+        popup.classList.add('open');
+        popup.addEventListener(
+            "submit",
+            e => {
+                e.preventDefault();
+                const formEl = e.currentTarget;
+                const newBirthday = {
+                    lastName: formEl.lastname.value,
+                    firstName: formEl.firstname.value,
+                    birthday: formEl.birthday.value,
+                    picture: formEl.image.value,
+                    id: Date.now(),
+                }
+                people.push(newBirthday);
+                console.log(people);
+                displayData();
+                destroyPopup(popup)
+                popup.reset()
+                tbody.dispatchEvent(new CustomEvent('listUpdated'));
+            }
+        )
+        const skipButton = document.createElement('button');
+            skipButton.type = 'button'; // so it doesn't submit
+            skipButton.textContent = 'Cancel';
+            popup.firstElementChild.appendChild(skipButton);
+        
+            skipButton.addEventListener(
+                'click',
+                () => {
+                    destroyPopup(popup);
+                },
+                { once: true }
+            );
+
+    }
+
+    Addbutton.addEventListener("click", AddPersonPopup)
     // Stored the data inside of the local storage. 
     const initLocalStorage = () => {
         const birthdayList = JSON.parse(localStorage.getItem('people'));
@@ -222,7 +280,6 @@ async function getData() {
         localStorage.setItem('people', JSON.stringify(people));
     };
 
-    window.addEventListener('DOMContentLoaded', birthdays);
     tbody.addEventListener('listUpdated', updateLocalStorage);
     initLocalStorage();
     displayData();

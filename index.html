@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>TEST</title>
-		<link rel="stylesheet" href="./index.css">
-	</head>
-	<body>
-		<header>
-			<h1>
-				Birthday app 
-			</h1>
-		</header>
-		<main>
-			<section class="filters">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>TEST</title>
+	<link rel="stylesheet" href="./index.css">
+</head>
+
+<body>
+	<header>
+		<h1>
+			Birthday App
+		</h1>
+	</header>
+	<main>
+		<section class="filters">
+			<div>
+				<label class="filterName">Filter by name</label>
 				<input class="searchName" type="text" placeholder="Search by name" />
-				<select class="filterMonth">
+			</div>
+			<div>
+				<label class="filterName" for="pet-select">Choose a pet:</label>
+				<select class="filterMonth" id="pet-select">
 					<option value="">Filter by month</option>
 					<option value="0">January</option>
 					<option value="1">February</option>
@@ -30,11 +37,12 @@
 					<option value="10">November</option>
 					<option value="11">December</option>
 				</select>
-				<button class="addButton">Add somebody</button>
-			</section>
-		
-				<ul id="myData"></ul>
-		</main>
-		<script src="script.js" ></script>
-	</body>
+			</div>
+			<button class="addButton">Add somebody</button>
+		</section>
+		<ul id="myData"></ul>
+	</main>
+	<script src="script.js"></script>
+</body>
+
 </html>

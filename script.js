@@ -13,7 +13,7 @@ const filterMonthFilter = document.querySelector('.filterMonth');
 //fuction that handle every function we need
 async function getData() {
     // fetch file of people
-    const response = await fetch('https://gist.githubusercontent.com/Pinois/e1c72b75917985dc77f5c808e876b67f/raw/93debb7463fbaaec29622221b8f9e719bd5b119f/birthdayPeople.json');
+    const response = await fetch('https://gist.githubusercontent.com/Pinois/e1c72b75917985dc77f5c808e876b67f/raw/b17e08696906abeaac8bc260f57738eaa3f6abb1/birthdayPeople.json');
     const data = await response.json();
     // empty array to store everything
     let people = [];
@@ -127,7 +127,7 @@ async function getData() {
               <input type="text" name="firstName" value="${person.firstName}"/>
               <label>Birthday</label>
               <input type="date" id="start" name="tripStart"value="2000-01-01" min="2000-01-01" max="2020-12-31">
-              <button type="submit">Submit</button>
+              <button type="submit">Save changes</button>
             </fieldset>`;
             const skipButton = document.createElement('button');
             skipButton.type = 'button'; // so it doesn't submit

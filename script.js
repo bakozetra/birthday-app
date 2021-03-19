@@ -1,4 +1,8 @@
+// const calcDistanceToBirthday = require("./utils")
+import {calcDistanceToBirthday} from "./utils.js"
 //Set the function for the  promise.
+
+
 function wait(ms = 0) {
     return new Promise(resolve => setTimeout(resolve, ms))
 }
@@ -18,72 +22,58 @@ async function getData() {
     // empty array to store everything
     let people = [];
     people = data;
-    console.log(people)
+    people = people.map(person => calcDistanceToBirthday(person))
 
-    searchNameFilter.addEventListener('input', () => displayData(people));
-    filterMonthFilter.addEventListener('change', () => displayData(people));
+   
 
-    function displayData() {
-        let peopleData = [...people];
-        console.log(peopleData);
-        if (searchNameFilter.value !== '') {
-            peopleData = peopleData.filter(person => {
-                const fullNameLowercase =
-                    person.firstName.toLowerCase() + ' ' + person.lastName.toLowerCase();
-                return fullNameLowercase.includes(searchNameFilter.value.toLowerCase());
-            });
-        }
+    function displayData  (people) {
+        console.log(people);
+            if (searchNameFilter.value !== '') {
+                people = people.filter(person => {
+                    const fullNameLowercase =
+                        person.firstName.toLowerCase() + ' ' + person.lastName.toLowerCase();
+                    return fullNameLowercase.includes(searchNameFilter.value.toLowerCase());
+                });
+                }
+      
+
         if (filterMonthFilter.value !== '') {
-            peopleData = peopleData.filter(person => {
+            people = people.filter(person => {
                 let birthday = new Date(person.birthday);
                 return birthday.getMonth() === Number(filterMonthFilter.value);
             });
+            
         }
-
-
+       
         //Sort people’s birthdays from the youngest to the oldest.
-        const newDataSort = peopleData.slice().sort((a, b) => a.birthday - b.birthday)
+    if(!people) {
+        return 
+    }
+
+        const newDataSort = people.slice().sort((a, b) => ( a.distanceToBirthday - b.distanceToBirthday ))
 
         //created html and  map the newDataSort.
         const html = newDataSort.map((person, index) => {
-            function calculate_age(dob) {
-                var diff_ms = Date.now() - dob.getTime();
-                var age_dt = new Date(diff_ms);
-                return Math.abs(age_dt.getUTCFullYear() - 1970);
-            }
-            let year = calculate_age(new Date(person.birthday));
-            year = year + 1;
-            const newDate = new Date(person.birthday);
-            const month = newDate.toLocaleString('default', { month: 'long' });
-            const dayBirthday = newDate.getDate();
-            // calculate birday day in between
-            var birthday = new Date(person.birthday);
-            var today = new Date();
-            //Set current year or the next year if you already had birthday this year
-            birthday.setFullYear(today.getFullYear());
-            if (today > birthday) {
-                birthday.setFullYear(today.getFullYear() + 1);
-            }
 
-            //Calculate difference between days
-            let daysTobirthday = Math.floor((birthday - today) / (1000 * 60 * 60 * 24))
             return `
     <li data-id="${person.id}" class="${index % 2 ? 'even' : ''}">
-     <img src="${person.picture}" alt="${person.firstName + ' ' + person.lastName}" class ="person-image"/>
-     <div class = "aboutyear">
-      <h3 class ="name">${person.lastName} ${person.firstName}</h3>
-      <p class="age">Turns ${year} years on ${month} on ${dayBirthday} th </p>
-      </div>
-      <p class="day">
-      ${daysTobirthday === 0 ? `🎂🎂🎂` : `in ${daysTobirthday} days`}</p>
-      <div class= "icon">
-          <button class="edit">
-            <img src="./svg/edit.svg" alt="">
-          </button>
-          <button class="delete">
-            <img src="./svg/delete.svg" alt="">
-          </button>
-      </div>
+        <img src="${person.picture}" alt="${person.firstName + ' ' + person.lastName}" class ="person-image"/>
+        <div class = "aboutyear">
+            <h3 class ="name">${person.lastName} ${person.firstName}</h3>
+            <p class="age">Turns <b>${person.futureAge}</b>years on ${person.birthdayMonth} on ${person.birthdayDay} th </p>
+        </div>
+        <div class="edit-delete-day-wraper">
+            <p class="day">
+            ${person.distanceToBirthday === 0 ? `🎂🎂🎂` : `in ${person.distanceToBirthday} days`}</p>
+            <div class= "icon">
+               <button class="edit">
+                <img src="./svg/edit.svg" alt="">
+                </button>
+                <button class="delete">
+                <img src="./svg/delete.svg" alt="">
+               </button>
+           </div>
+        </div>
     </li>
   `
         }).join('');
@@ -91,8 +81,11 @@ async function getData() {
         tbody.dispatchEvent(new CustomEvent('listUpdated'));
     }
 
+    console.log(people);
     // Function that handle the add data (birthday)
 
+    searchNameFilter.addEventListener('input', () => displayData(people));
+    filterMonthFilter.addEventListener('change', () => displayData(people));
 
     async function destroyPopup(popup) {
         popup.classList.remove('open');
@@ -105,34 +98,38 @@ async function getData() {
     }
 
     // Function that handle the edit form (editBirthday)
-    const editBirthday = id => {
+    const editBirthday = async( id) => {
         const birthdayId = people.find((birthday => birthday.id == id));
         console.log(birthdayId);
-        const result = editBirthdayPopup(birthdayId);
+        const result =  await editBirthdayPopup(birthdayId);
+        console.log("editbirthdat", result);
         if (result) {
-            displayData(result);
+        
+            displayData(people);
         }
     }
 
     const editBirthdayPopup = person => {
         return new Promise(async resolve => {
+            const birthdayDate = new Date(person.birthday).toISOString().slice(0, 10);
             const popup = document.createElement('form');
             popup.classList.add('popup');
             popup.innerHTML =
-                `<fieldset>
-              <h3>Edit</h3>
+                `<fieldset class="edit_person-wrapper">
+              <h3 class="edit_person">Edit ${person.firstName}</h3>
               <label>Lastname</label>
               <input type="text" name="lastName" value="${person.lastName}"/>
               <label>Firstname</label>
               <input type="text" name="firstName" value="${person.firstName}"/>
               <label>Birthday</label>
-              <input type="date" id="start" name="tripStart"value="2000-01-01" min="2000-01-01" max="2020-12-31">
-              <button type="submit">Save changes</button>
+              <input type="date" id="start" name="bithdayDate" value="${birthdayDate}">
+              <div class= "addChages-cancel-wrapper">
+                  <button type="submit">Save changes</button>
+                  <button type="button" id="cancel-btn">Cancel</button>
+              </div>
             </fieldset>`;
-            const skipButton = document.createElement('button');
-            skipButton.type = 'button'; // so it doesn't submit
-            skipButton.textContent = 'Cancel';
-            popup.firstElementChild.appendChild(skipButton);
+          
+                
             document.body.appendChild(popup);
             // await wait(10);
             popup.classList.add('open');
@@ -143,21 +140,25 @@ async function getData() {
                     e.preventDefault();
                     person.lastName = e.target.lastName.value;
                     person.firstName = e.target.firstName.value;
-                    person.birthday = e.target.tripStart.value;
-                    resolve();
-                    displayData()
+                    person.birthday = e.target.bithdayDate.value;
+                     const personWithCalculateDate  =calcDistanceToBirthday(person)
+
+                    resolve(personWithCalculateDate);
+                    displayData(people)
                     destroyPopup(popup);
                 }, { once: true }
             );
 
+            const skipButton = document.querySelector('#cancel-btn');
             skipButton.addEventListener(
                 'click',
                 () => {
-                    resolve(null);
-                    destroyPopup(popup);
+                  
+                    destroyPopup(popup); //  resolve(null);
                 },
                 { once: true }
             );
+     
         });
     };
 
@@ -166,14 +167,17 @@ async function getData() {
     const deleteBirthdayPopup = id => {
         console.log(id);
         const filterIdOfPeople = people.filter(person => person.id != id);
+        const selectedPerson = people.filter(person => person.id === id)[0]
         let deleteDiv = document.createElement('div');
         deleteDiv.classList.add('popup');
         deleteDiv.insertAdjacentHTML('afterbegin', `
-            <fieldset>
-                <h3>Delete ${id.firstName} ${id.lastName}</h3>
+            <fieldset class ="want_to_delete">
+                <h3>Delete ${selectedPerson.firstName} ${selectedPerson.lastName}</h3>
                 <p>Are you sure you want to delete this person from the list?</p>
-                <button type="submit" class ='delete'>Delete</button>
-                <button type = "button" class ="cancel-delete">Cancel</button>
+                <div class="deleted_button">
+                    <button type="submit" class ='delete'>Delete</button>
+                    <button type = "button" class ="cancel-delete">Cancel</button>
+                </div>
             </fieldset>
     `);
 
@@ -184,6 +188,7 @@ async function getData() {
             const deleteButon = e.target.closest("button.delete");
             if (deleteButon) {
                 people = filterIdOfPeople;
+            
                 displayData(people);
                 destroyPopup(deleteDiv);
                 tbody.dispatchEvent(new CustomEvent('updateList'));
@@ -215,16 +220,19 @@ async function getData() {
         const popup = document.createElement('form');
         popup.classList.add('popup');
         popup.innerHTML = `
-            <div>
-            <label for="firstname">First Name</label>
-            <input type="text" name="firstname" id="firstname">
-            <label for="lastname">Last name</label>
-            <input type="text" name="lastname" id="lastname">
-            <label for="birthday">Birthday</label>
-            <input type="date" id="birthday" name="birthday" value="2000-01-01" min="2000-01-01" max="2020-12-31">
-            <label for="image">Image</label>
-            <input type="url" name="image">
-            <button type="submit">Add</button>
+            <div class="add-form"> 
+                <label for="firstname">First Name</label>
+                <input type="text" name="firstname" id="firstname">
+                <label for="lastname">Last name</label>
+                <input type="text" name="lastname" id="lastname">
+                <label for="birthday">Birthday</label>
+                <input type="date" id="birthday" name="birthday" value="2000-01-01" min="2000-01-01" max="2020-12-31">
+                <label for="image">Image</label>
+                <input type="url" name="image">
+                <div class="add-cancel-wrapper">
+                    <button type="submit">Add</button>
+                    <button type = "button" id ="cancel-btn"> Cancel</button>
+                </div>
             </div>
         
             `
@@ -243,19 +251,17 @@ async function getData() {
                     picture: formEl.image.value,
                     id: Date.now(),
                 }
+                calcDistanceToBirthday(newBirthday)
                 people.push(newBirthday);
                 console.log(people);
-                displayData();
+            
+                displayData(people);
                 destroyPopup(popup)
                 popup.reset()
                 tbody.dispatchEvent(new CustomEvent('listUpdated'));
             }
         )
-        const skipButton = document.createElement('button');
-            skipButton.type = 'button'; // so it doesn't submit
-            skipButton.textContent = 'Cancel';
-            popup.firstElementChild.appendChild(skipButton);
-        
+        const skipButton = document.querySelector('#cancel-btn');
             skipButton.addEventListener(
                 'click',
                 () => {
@@ -282,7 +288,8 @@ async function getData() {
 
     tbody.addEventListener('listUpdated', updateLocalStorage);
     initLocalStorage();
-    displayData();
+
+    displayData(people);
 
 }
 

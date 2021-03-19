@@ -117,7 +117,51 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"script.js":[function(require,module,exports) {
+})({"utils.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.calcDistanceToBirthday = calcDistanceToBirthday;
+
+function calcDistanceToBirthday(object) {
+  function calculate_age(dob) {
+    var diff_ms = Date.now() - dob.getTime();
+    var age_dt = new Date(diff_ms);
+    return Math.abs(age_dt.getUTCFullYear() - 1970);
+  }
+
+  var year = calculate_age(new Date(object.birthday)) + 1;
+  var newDate = new Date(object.birthday);
+  var month = newDate.toLocaleString('default', {
+    month: 'long'
+  });
+  var dayBirthday = newDate.getDate(); // calculate birday day in between
+
+  var birthday = new Date(object.birthday);
+  var today = new Date(); //Set current year or the next year if you already had birthday this year
+
+  birthday.setFullYear(today.getFullYear());
+
+  if (today > birthday) {
+    birthday.setFullYear(today.getFullYear() + 1);
+  } //Calculate difference between days
+
+
+  var daysToBirthday = Math.floor((birthday - today) / (1000 * 60 * 60 * 24));
+  object.birthdayDay = dayBirthday;
+  object.birthdayMonth = month;
+  object.futureAge = year;
+  object.distanceToBirthday = daysToBirthday;
+  console.log(object);
+  return object;
+}
+},{}],"script.js":[function(require,module,exports) {
+"use strict";
+
+var _utils = require("./utils.js");
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -132,7 +176,10 @@ function wait() {
 
 
 var tbody = document.querySelector('ul');
-var form = document.querySelector('.form'); //fuction that handle every function we need
+var Addbutton = document.querySelector(".addButton");
+console.log(Addbutton);
+var searchNameFilter = document.querySelector('.searchName');
+var filterMonthFilter = document.querySelector('.filterMonth'); //fuction that handle every function we need
 
 function getData() {
   return _getData.apply(this, arguments);
@@ -140,7 +187,7 @@ function getData() {
 
 function _getData() {
   _getData = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
-    var response, data, people, displayData, birthdays, destroyPopup, _destroyPopup, editBirthday, editBirthdayPopup, deleteBirthdayPopup, handleClick, initLocalStorage, updateLocalStorage;
+    var response, data, people, displayData, destroyPopup, _destroyPopup, editBirthday, editBirthdayPopup, deleteBirthdayPopup, handleClick, AddPersonPopup, initLocalStorage, updateLocalStorage;
 
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
@@ -177,47 +224,37 @@ function _getData() {
               return _destroyPopup.apply(this, arguments);
             };
 
-            displayData = function _displayData() {
-              //Sort people’s birthdays from the youngest to the oldest.
-              var newDataSort = people.sort(function (a, b) {
-                return b.birthday - a.birthday;
+            displayData = function _displayData(people) {
+              console.log(people);
+
+              if (searchNameFilter.value !== '') {
+                people = people.filter(function (person) {
+                  var fullNameLowercase = person.firstName.toLowerCase() + ' ' + person.lastName.toLowerCase();
+                  return fullNameLowercase.includes(searchNameFilter.value.toLowerCase());
+                });
+              }
+
+              if (filterMonthFilter.value !== '') {
+                people = people.filter(function (person) {
+                  var birthday = new Date(person.birthday);
+                  return birthday.getMonth() === Number(filterMonthFilter.value);
+                });
+              } //Sort people’s birthdays from the youngest to the oldest.
+
+
+              var newDataSort = people.slice().sort(function (a, b) {
+                return a.distanceToBirthday - b.distanceToBirthday;
               }); //created html and  map the newDataSort.
 
               var html = newDataSort.map(function (person, index) {
-                function calculate_age(dob) {
-                  var diff_ms = Date.now() - dob.getTime();
-                  var age_dt = new Date(diff_ms);
-                  return Math.abs(age_dt.getUTCFullYear() - 1970);
-                }
-
-                var year = calculate_age(new Date(person.birthday));
-                year = year + 1;
-                var newDate = new Date(person.birthday);
-                var month = newDate.toLocaleString('default', {
-                  month: 'long'
-                });
-                var dayBirthday = newDate.getDate(); // calculate birday day in between
-
-                var birthday = new Date(person.birthday);
-                var today = new Date(); //Set current year or the next year if you already had birthday this year
-
-                birthday.setFullYear(today.getFullYear());
-
-                if (today > birthday) {
-                  birthday.setFullYear(today.getFullYear() + 1);
-                } //Calculate difference between days
-
-
-                var daysTobirthday = Math.floor((birthday - today) / (1000 * 60 * 60 * 24));
-                console.log(daysTobirthday);
-                return "\n    <li data-id=\"".concat(person.id, "\" class=\"").concat(index % 2 ? 'even' : '', "\">\n     <img src=\"").concat(person.picture, "\" alt=\"").concat(person.firstName + ' ' + person.lastName, "\" class =\"person-image\"/>\n     <div>\n      <h3 class =\"name\">").concat(person.lastName, " ").concat(person.firstName, "</h3>\n      <p class=\"age\">Turns ").concat(year, " on ").concat(month, " on ").concat(dayBirthday, " th </p>\n      </div>\n      <p class=\"day\">\n      ").concat(daysTobirthday === 0 ? "\uD83C\uDF82\uD83C\uDF82\uD83C\uDF82" : "in ".concat(daysTobirthday, " days"), "</p>\n      <div class= \"icon\">\n          <button class=\"edit\">\n            <img src=\"./svg/edit.svg\" alt=\"\">\n          </button>\n          <button class=\"delete\">\n            <img src=\"./svg/delete.svg\" alt=\"\">\n          </button>\n      </div>\n    </li>\n  ");
+                return "\n    <li data-id=\"".concat(person.id, "\" class=\"").concat(index % 2 ? 'even' : '', "\">\n     <img src=\"").concat(person.picture, "\" alt=\"").concat(person.firstName + ' ' + person.lastName, "\" class =\"person-image\"/>\n     <div class = \"aboutyear\">\n      <h3 class =\"name\">").concat(person.lastName, " ").concat(person.firstName, "</h3>\n      <p class=\"age\">Turns ").concat(person.futureAge, " years on ").concat(person.birthdayMonth, " on ").concat(person.birthdayDay, " th </p>\n      </div>\n      <p class=\"day\">\n      ").concat(person.distanceToBirthday === 0 ? "\uD83C\uDF82\uD83C\uDF82\uD83C\uDF82" : "in ".concat(person.distanceToBirthday, " days"), "</p>\n      <div class= \"icon\">\n          <button class=\"edit\">\n            <img src=\"./svg/edit.svg\" alt=\"\">\n          </button>\n          <button class=\"delete\">\n            <img src=\"./svg/delete.svg\" alt=\"\">\n          </button>\n      </div>\n    </li>\n  ");
               }).join('');
               tbody.innerHTML = html;
               tbody.dispatchEvent(new CustomEvent('listUpdated'));
             };
 
             _context3.next = 5;
-            return fetch('https://gist.githubusercontent.com/Pinois/e1c72b75917985dc77f5c808e876b67f/raw/93debb7463fbaaec29622221b8f9e719bd5b119f/birthdayPeople.json');
+            return fetch('https://gist.githubusercontent.com/Pinois/e1c72b75917985dc77f5c808e876b67f/raw/b17e08696906abeaac8bc260f57738eaa3f6abb1/birthdayPeople.json');
 
           case 5:
             response = _context3.sent;
@@ -229,25 +266,17 @@ function _getData() {
             // empty array to store everything
             people = [];
             people = data;
-            console.log(people);
+            people = people.map(function (person) {
+              return (0, _utils.calcDistanceToBirthday)(person);
+            });
+            console.log(people); // Function that handle the add data (birthday)
 
-            // Function that handle the add data (birthday)
-            birthdays = function birthdays(e) {
-              e.preventDefault();
-              var formEl = e.currentTarget;
-              var newBirthday = {
-                lastName: formEl.lastname.value,
-                firstName: formEl.firstname.value,
-                birthday: formEl.birthday.value,
-                picture: formEl.image.value,
-                id: Date.now()
-              };
-              people.push(newBirthday);
-              console.log(people);
-              displayData();
-              form.reset();
-              tbody.dispatchEvent(new CustomEvent('listUpdated'));
-            };
+            searchNameFilter.addEventListener('input', function () {
+              return displayData(people);
+            });
+            filterMonthFilter.addEventListener('change', function () {
+              return displayData(people);
+            });
 
             // Function that handle the edit form (editBirthday)
             editBirthday = function editBirthday(id) {
@@ -272,7 +301,7 @@ function _getData() {
                         case 0:
                           popup = document.createElement('form');
                           popup.classList.add('popup');
-                          popup.innerHTML = "<fieldset>\n              <h3>Edit</h3>\n              <label>Lastname</label>\n              <input type=\"text\" name=\"lastName\" value=\"".concat(person.lastName, "\"/>\n              <label>Firstname</label>\n              <input type=\"text\" name=\"firstName\" value=\"").concat(person.firstName, "\"/>\n              <label>Birthday</label>\n              <input type=\"date\" id=\"start\" name=\"tripStart\"value=\"2000-01-01\" min=\"2000-01-01\" max=\"2020-12-31\">\n              <button type=\"submit\">Submit</button>\n            </fieldset>");
+                          popup.innerHTML = "<fieldset>\n              <h3>Edit</h3>\n              <label>Lastname</label>\n              <input type=\"text\" name=\"lastName\" value=\"".concat(person.lastName, "\"/>\n              <label>Firstname</label>\n              <input type=\"text\" name=\"firstName\" value=\"").concat(person.firstName, "\"/>\n              <label>Birthday</label>\n              <input type=\"date\" id=\"start\" name=\"tripStart\"value=\"2000-01-01\" min=\"2000-01-01\" max=\"2020-12-31\">\n              <button type=\"submit\">Save changes</button>\n            </fieldset>");
                           skipButton = document.createElement('button');
                           skipButton.type = 'button'; // so it doesn't submit
 
@@ -319,9 +348,12 @@ function _getData() {
               var filterIdOfPeople = people.filter(function (person) {
                 return person.id != id;
               });
+              var selectedPerson = people.filter(function (person) {
+                return person.id === id;
+              })[0];
               var deleteDiv = document.createElement('div');
               deleteDiv.classList.add('popup');
-              deleteDiv.insertAdjacentHTML('afterbegin', "\n            <fieldset>\n                <h3>Delete ".concat(id.firstName, " ").concat(id.lastName, "</h3>\n                <p>Are you sure you want to delete this person from the list?</p>\n                <button type=\"submit\" class ='delete'>Delete</button>\n                <button type = \"button\" class =\"cancel-delete\">Cancel</button>\n            </fieldset>\n    "));
+              deleteDiv.insertAdjacentHTML('afterbegin', "\n            <fieldset>\n                <h3>Delete ".concat(selectedPerson.firstName, " ").concat(selectedPerson.lastName, "</h3>\n                <p>Are you sure you want to delete this person from the list?</p>\n                <button type=\"submit\" class ='delete'>Delete</button>\n                <button type = \"button\" class =\"cancel-delete\">Cancel</button>\n            </fieldset>\n    "));
               document.body.appendChild(deleteDiv);
               deleteDiv.classList.add("open");
               deleteDiv.addEventListener("click", function (e) {
@@ -355,13 +387,50 @@ function _getData() {
               if (e.target.closest('button.delete')) {
                 var deleteButton = e.target.closest('li');
                 var idToDelete = deleteButton.dataset.id;
-                console.log(idToDelete);
                 deleteBirthdayPopup(idToDelete);
               }
             };
 
-            form.addEventListener('submit', birthdays);
-            tbody.addEventListener('click', handleClick); // Stored the data inside of the local storage. 
+            tbody.addEventListener('click', handleClick);
+
+            AddPersonPopup = function AddPersonPopup() {
+              var popup = document.createElement('form');
+              popup.classList.add('popup');
+              popup.innerHTML = "\n            <div>\n            <label for=\"firstname\">First Name</label>\n            <input type=\"text\" name=\"firstname\" id=\"firstname\">\n            <label for=\"lastname\">Last name</label>\n            <input type=\"text\" name=\"lastname\" id=\"lastname\">\n            <label for=\"birthday\">Birthday</label>\n            <input type=\"date\" id=\"birthday\" name=\"birthday\" value=\"2000-01-01\" min=\"2000-01-01\" max=\"2020-12-31\">\n            <label for=\"image\">Image</label>\n            <input type=\"url\" name=\"image\">\n            <button type=\"submit\">Add</button>\n            </div>\n        \n            ";
+              document.body.appendChild(popup); // await wait(10);
+
+              popup.classList.add('open');
+              popup.addEventListener("submit", function (e) {
+                e.preventDefault();
+                var formEl = e.currentTarget;
+                var newBirthday = {
+                  lastName: formEl.lastname.value,
+                  firstName: formEl.firstname.value,
+                  birthday: formEl.birthday.value,
+                  picture: formEl.image.value,
+                  id: Date.now()
+                };
+                (0, _utils.calcDistanceToBirthday)(newBirthday);
+                people.push(newBirthday);
+                console.log(people);
+                displayData();
+                destroyPopup(popup);
+                popup.reset();
+                tbody.dispatchEvent(new CustomEvent('listUpdated'));
+              });
+              var skipButton = document.createElement('button');
+              skipButton.type = 'button'; // so it doesn't submit
+
+              skipButton.textContent = 'Cancel';
+              popup.firstElementChild.appendChild(skipButton);
+              skipButton.addEventListener('click', function () {
+                destroyPopup(popup);
+              }, {
+                once: true
+              });
+            };
+
+            Addbutton.addEventListener("click", AddPersonPopup); // Stored the data inside of the local storage. 
 
             initLocalStorage = function initLocalStorage() {
               var birthdayList = JSON.parse(localStorage.getItem('people'));
@@ -378,12 +447,11 @@ function _getData() {
               localStorage.setItem('people', JSON.stringify(people));
             };
 
-            window.addEventListener('DOMContentLoaded', birthdays);
             tbody.addEventListener('listUpdated', updateLocalStorage);
             initLocalStorage();
-            displayData();
+            displayData(people);
 
-          case 25:
+          case 27:
           case "end":
             return _context3.stop();
         }
@@ -394,7 +462,7 @@ function _getData() {
 }
 
 getData();
-},{}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./utils.js":"utils.js"}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -422,7 +490,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50458" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54772" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

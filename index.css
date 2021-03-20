@@ -1,11 +1,22 @@
+:root {
+	--main-color: rgba(216, 238, 254, 1);
+	--font-size-input: 18px;
+	--font-family: Rubik;
+	--font-style-normal: normal;
+	--font-weight-bold: bold;
+	--font-weight: 500;
+}
+
 html {
 	width: 100%;
 }
 
 body {
-	background: rgba(216, 238, 254, 1);
+	background: var(--main-color);
 	margin: 0;
-	font-family: Rubik;
+	font-family: var(--font-family);
+	font-style: var(--font-style-normal);
+	font-weight: var(--font-weight);
 }
 
 ul {
@@ -39,7 +50,6 @@ fieldset {
 	margin-bottom: 1rem;
 }
 
-
 input {
 	height: 1.5rem;
 	background-color: #e3f6f5;
@@ -54,9 +64,9 @@ header {
 header h1 {
 	color: #272343;
 	font-size: 4rem;
-	font-family: "Roboto";
 	padding-top: 63px;
 	padding-bottom: 42px;
+	margin: 0;
 }
 
 li {
@@ -74,38 +84,55 @@ li {
 li img {
 	width: 50px;
 }
+
+.searchName {
+	margin-bottom: 1rem;
+}
+
+.searchName,
+.filterMonth {
+	width: 264px;
+	height: 50px;
+	border-radius: 5px;
+	background-color: white;
+	margin: 0;
+	border: none;
+	outline: none;
+	padding-left: 1rem;
+	color: rgba(95, 108, 123, 1);
+	font-size: var(--font-size-input);
+	line-height: 21px;
+}
+.filterMonth {
+	padding: 0.5rem 0.5rem;
+	border-radius: 5px;
+	border: 1px solid #faeee7;
+	color: #594a4e;
+}
+
 .filterName {
 	display: block;
 	margin-bottom: 13px;
 	color: rgba(9, 64, 103, 1);
-	font-size: 18px;
-  line-height: 21px;
+	font-size: var(--font-size-input);
+	line-height: 21px;
 }
 .age,
 .day {
 	font-size: 0.75rem;
-	font-family: "Rubik";
 }
+
 .day {
 	margin-left: auto;
 	margin-right: auto;
-	font-style: normal;
-	font-weight: 500;
-	font-size: 24px;
 	line-height: 28px;
 	color: #5f6c7b;
 }
 .name {
-	font-family: Rubik;
 	font-size: 0.75rem;
 	color: #272343;
-	font-style: normal;
-	font-weight: 500;
 }
 .age {
-	font-family: Rubik;
-	font-style: normal;
-	font-weight: 500;
 	line-height: 28px;
 	color: #5f6c7b;
 }
@@ -120,9 +147,6 @@ li img {
 	color: #ef4565;
 }
 
-.aboutyear {
-
-}
 .popup {
 	background: rgba(255, 255, 255, 0.8);
 	position: fixed;
@@ -140,6 +164,7 @@ li img {
 .want_to_delete {
 	width: 200px;
 }
+
 .popup button[type="submit"],
 .popup button[type="button"] {
 	color: white;
@@ -156,18 +181,19 @@ li img {
 }
 
 .add-cancel-wrapper {
-	display: flex ;
+	display: flex;
 	justify-content: space-between;
-
 }
 
 .edit-delete-day-wraper {
 	margin-right: 25px;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
 }
 .popup button[type="button"] {
 	color: rgba(95, 108, 123, 1);
-	border:2px solid #5F6C7B;
-
+	border: 2px solid #5f6c7b;
 }
 
 .popup button[type="submit"] {
@@ -189,15 +215,15 @@ li img {
 .popup .edit_person-wrapper {
 	display: grid;
 	background: #fffffe;
-	padding-left: 264px;
-	padding-right: 500px;
-	padding-top: 121px;
-	padding-bottom: 288px;
+	padding-left: 50px;
+	padding-right: 50px;
+	padding-bottom: 50px;
+	padding-top: 50px;
 	border: none;
 	border-radius: 5px;
 	box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
 	transition: all 0.2s;
-	--scale: 1;
+	--scale: 0.7;
 	transform: scale(var(--scale));
 }
 .popup .add-form {
@@ -213,10 +239,6 @@ li img {
 	pointer-events: all;
 }
 
-/* .popup.open fieldset {
-	--scale: 1;
-} */
-
 button img {
 	width: 20px;
 }
@@ -226,14 +248,15 @@ button {
 	outline: none;
 }
 .filters {
-	width: 57%;
+	width: 85%;
 	margin-left: auto;
 	margin-right: auto;
 	display: flex;
 	align-items: flex-end;
 	flex-wrap: wrap;
 	justify-content: space-between;
-
+	font-size: var(--font-size-input);
+	line-height: 21px;
 }
 .addButton {
 	background: #ef4565;
@@ -244,21 +267,6 @@ button {
 	font-size: 18px;
 	margin-top: 2rem;
 }
-
-.searchName,
-.filterMonth {
-	width: 264px;
-	height: 50px;
-	border-radius: 5px;
-	background-color: white;
-	margin: 0;
-	border: none;
-	outline: none;
-	padding-left: 1rem;
-	color: rgba(95, 108, 123, 1);
-	;
-}
-
 
 .edit,
 .delete {
@@ -272,24 +280,22 @@ button {
 }
 
 @media (min-width: 400px) {
+	.filters {
+		width: 58%;
+	}
 	button img {
 		width: 30px;
 	}
-
 	li > img {
 		width: 100px;
 	}
-	.edit {
-		margin-right: 20px;
-	}
 
-	.age,
 	.day {
-		font-size: 1rem;
+		font-size: 24px;
 	}
 
-	.aboutyear {
-		/* margin-right: auto; */
+	.edit {
+		margin-right: 17px;
 	}
 	.age {
 		font-size: 24px;
@@ -297,9 +303,6 @@ button {
 	.name {
 		font-size: 0.75rem;
 		color: #272343;
-		font-family: Rubik;
-		font-style: normal;
-		font-weight: 500;
 		font-size: 36px;
 		line-height: 43px;
 		color: #000000;
@@ -309,21 +312,20 @@ button {
 		width: 100%;
 	}
 	.person-image {
-		margin: 1rem;
+		margin-top: 23px;
+		margin-bottom: 24px;
+	}
+	.popup .edit_person-wrapper {
+		--scale: 0.8;
+		transform: scale(var(--scale));
 	}
 
 	li {
-		width: 65%;
+		width: 66.4%;
 		display: flex;
-		place-items: center center;
-		background-color: #fffffe;
-		margin-bottom: 2rem;
-		margin-left: auto;
-		margin-right: auto;
-		justify-content: space-between;
-		/* width: 779px;
-		height: 139px; */
-		max-width: 100%;
+		flex-direction: column;
+		align-items: flex-start;
+		padding-left: 43px;
 	}
 	main {
 		width: 100%;
@@ -336,11 +338,42 @@ button {
 	}
 	.edit_person {
 		font-size: 48px;
-    line-height: 57px;
+		line-height: 57px;
 		color: #094067;
 		width: 400px;
 		margin: 0;
 	}
+}
+
+@media (min-width: 600px) {
+	li {
+		display: flex;
+		flex-direction: row;
+		place-items: center center;
+		background-color: #fffffe;
+		margin-bottom: 2rem;
+		margin-left: auto;
+		margin-right: auto;
+		justify-content: space-between;
+		max-width: 100%;
+		padding-left: 0;
+	}
+	.person-image {
+		margin-left: 43px;
+	}
+	.aboutyear {
+		margin-left: 20px;
+	}
+	.popup .edit_person-wrapper {
+		--scale: 1;
+		transform: scale(var(--scale));
+		padding-top: 121px;
+		padding-left: 264px;
+   	padding-right: 500px;
+		padding-bottom: 288px;
+
+	}
+
 }
 
 @media (min-width: 800px) {

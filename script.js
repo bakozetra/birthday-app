@@ -64,7 +64,7 @@ async function getData() {
         </div>
         <div class="edit-delete-day-wraper">
             <p class="day">
-            ${person.distanceToBirthday === 0 ? `🎂🎂🎂` : `in ${person.distanceToBirthday} days`}</p>
+            ${person.distanceToBirthday == 0 ? `🎂🎂🎂` : `in ${person.distanceToBirthday} days`}</p>
             <div class= "icon">
                <button class="edit">
                 <img src="./svg/edit.svg" alt="">
@@ -112,6 +112,7 @@ async function getData() {
     const editBirthdayPopup = person => {
         return new Promise(async resolve => {
             const birthdayDate = new Date(person.birthday).toISOString().slice(0, 10);
+            const todayDate = new Date().toISOString().slice(0 , 10);
             const popup = document.createElement('form');
             popup.classList.add('popup');
             popup.innerHTML =
@@ -122,7 +123,7 @@ async function getData() {
               <label>Firstname</label>
               <input type="text" name="firstName" value="${person.firstName}"/>
               <label>Birthday</label>
-              <input type="date" id="start" name="bithdayDate" value="${birthdayDate}">
+              <input type="date" id="start" name="bithdayDate" value="${birthdayDate}" max = "${todayDate}">
               <div class= "addChages-cancel-wrapper">
                   <button type="submit">Save changes</button>
                   <button type="button" id="cancel-btn">Cancel</button>
@@ -141,8 +142,7 @@ async function getData() {
                     person.lastName = e.target.lastName.value;
                     person.firstName = e.target.firstName.value;
                     person.birthday = e.target.bithdayDate.value;
-                     const personWithCalculateDate  =calcDistanceToBirthday(person)
-
+                    const personWithCalculateDate = calcDistanceToBirthday(person)
                     resolve(personWithCalculateDate);
                     displayData(people)
                     destroyPopup(popup);
@@ -167,7 +167,9 @@ async function getData() {
     const deleteBirthdayPopup = id => {
         console.log(id);
         const filterIdOfPeople = people.filter(person => person.id != id);
-        const selectedPerson = people.filter(person => person.id === id)[0]
+        console.log(filterIdOfPeople);
+        const selectedPerson = people.filter(person => person.id == id)[0];
+        console.log(selectedPerson);
         let deleteDiv = document.createElement('div');
         deleteDiv.classList.add('popup');
         deleteDiv.insertAdjacentHTML('afterbegin', `
@@ -188,7 +190,6 @@ async function getData() {
             const deleteButon = e.target.closest("button.delete");
             if (deleteButon) {
                 people = filterIdOfPeople;
-            
                 displayData(people);
                 destroyPopup(deleteDiv);
                 tbody.dispatchEvent(new CustomEvent('updateList'));
@@ -218,6 +219,7 @@ async function getData() {
 
     const AddPersonPopup = () => {
         const popup = document.createElement('form');
+        const todayDate = new Date().toISOString().slice(0 , 10);
         popup.classList.add('popup');
         popup.innerHTML = `
             <div class="add-form"> 
@@ -226,7 +228,7 @@ async function getData() {
                 <label for="lastname">Last name</label>
                 <input type="text" name="lastname" id="lastname">
                 <label for="birthday">Birthday</label>
-                <input type="date" id="birthday" name="birthday" value="2000-01-01" min="2000-01-01" max="2020-12-31">
+                <input type="date" id="birthday" name="birthday" max = "${todayDate}">
                 <label for="image">Image</label>
                 <input type="url" name="image">
                 <div class="add-cancel-wrapper">

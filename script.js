@@ -128,6 +128,7 @@ async function getData() {
                   <button type="submit">Save changes</button>
                   <button type="button" id="cancel-btn">Cancel</button>
               </div>
+              <button type=button id="cancel-x">X</button>
             </fieldset>`;
           
                 
@@ -149,11 +150,20 @@ async function getData() {
                 }, { once: true }
             );
 
-            const skipButton = document.querySelector('#cancel-btn');
+            const skipButton = document.querySelector('#cancel-btn'); 
             skipButton.addEventListener(
                 'click',
                 () => {
-                  
+                    destroyPopup(popup); //  resolve(null);
+                },
+                { once: true }
+            );
+
+            const skipX = document.querySelector("#cancel-x")
+            console.log(skipX);
+            skipX.addEventListener(
+                'click',
+                () => {
                     destroyPopup(popup); //  resolve(null);
                 },
                 { once: true }

@@ -182,6 +182,13 @@ li {
 	--opacity: 0;
 	opacity: var(--opacity);
 }
+
+#cancel-x {
+	position: absolute;
+	border: none;
+	top: 3rem;
+	right: 3rem;
+} 
 .want_to_delete {
 	width: 200px;
 }

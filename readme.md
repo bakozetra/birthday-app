@@ -74,7 +74,7 @@ I would like to continue my code because I want to work on the date of people’
 
 ### 5) Would you like a new explanation about a specific topic?
  
-I woould like if you can explain more about the Promise.
+I would like if you can explain more about the Promise.
 
 ## 6) Any other comments?
 Everyting is Ok.

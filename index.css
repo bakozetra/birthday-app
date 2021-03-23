@@ -56,7 +56,7 @@ input {
 }
 
 header {
-	width: 58%;
+	width: 85%;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -71,7 +71,8 @@ header h1 {
 
 li {
 	display: flex;
-	place-items: center center;
+	flex-direction: column;
+  align-items: flex-start;
 	background-color: #fffffe;
 	margin-bottom: 2rem;
 	margin-left: auto;
@@ -79,35 +80,35 @@ li {
 	justify-content: space-between;
 	position: relative;
 	border-radius: 5px;
+	padding-left: 43px;
 }
 
-li img {
-	width: 50px;
-}
 
 .searchName {
 	margin-bottom: 1rem;
+	width: 242px;
+	height: 48px;
 }
 
 .searchName,
 .filterMonth {
-	width: 264px;
-	height: 50px;
 	border-radius: 5px;
 	background-color: white;
 	margin: 0;
 	border: none;
 	outline: none;
-	padding-left: 1rem;
+	padding-left: 20px;
 	color: rgba(95, 108, 123, 1);
 	font-size: var(--font-size-input);
 	line-height: 21px;
 }
 .filterMonth {
 	padding: 0.5rem 0.5rem;
+	height: 50px;
 	border-radius: 5px;
 	border: 1px solid #faeee7;
 	color: #594a4e;
+	width: 282px;
 }
 
 .filterName {
@@ -117,9 +118,9 @@ li img {
 	font-size: var(--font-size-input);
 	line-height: 21px;
 }
-.age,
-.day {
-	font-size: 0.75rem;
+.person-image {
+	width: 92px;
+	height: 94px;
 }
 
 .day {
@@ -129,7 +130,6 @@ li img {
 	color: #5f6c7b;
 }
 .name {
-	font-size: 0.75rem;
 	color: #272343;
 }
 .age {
@@ -140,13 +140,34 @@ li img {
 .age {
 	width: 80%;
 	margin: 0;
-	margin-left: auto;
 	margin-right: auto;
 }
 .age b {
 	color: #ef4565;
 }
 
+.day {
+	font-size: 24px;
+}
+
+.edit {
+	margin-right: 17px;
+}
+.age {
+	font-size: 24px;
+}
+.name {
+	font-size: 0.75rem;
+	color: #272343;
+	font-size: 36px;
+	line-height: 43px;
+	color: #000000;
+}
+
+.person-image {
+	margin-top: 23px;
+	margin-bottom: 24px;
+}
 .popup {
 	background: rgba(255, 255, 255, 0.8);
 	position: fixed;
@@ -189,7 +210,7 @@ li img {
 	margin-right: 25px;
 	display: flex;
 	flex-direction: column;
-	align-items: flex-end;
+	align-items: flex-start;
 }
 .popup button[type="button"] {
 	color: rgba(95, 108, 123, 1);
@@ -240,7 +261,7 @@ li img {
 }
 
 button img {
-	width: 20px;
+	width: 30px;
 }
 button {
 	border: none;
@@ -272,7 +293,7 @@ button {
 .delete {
 	cursor: pointer;
 	border-radius: 10px;
-	padding: 0;
+	width: 30px;
 }
 
 .person-image {
@@ -280,53 +301,35 @@ button {
 }
 
 @media (min-width: 400px) {
+	header {
+		width: 58%;
+	}
 	.filters {
 		width: 58%;
 	}
 	button img {
 		width: 30px;
 	}
-	li > img {
-		width: 100px;
-	}
 
-	.day {
-		font-size: 24px;
-	}
 
-	.edit {
-		margin-right: 17px;
-	}
-	.age {
-		font-size: 24px;
-	}
-	.name {
-		font-size: 0.75rem;
-		color: #272343;
-		font-size: 36px;
-		line-height: 43px;
-		color: #000000;
-	}
 	.name,
 	.age {
 		width: 100%;
 	}
-	.person-image {
-		margin-top: 23px;
-		margin-bottom: 24px;
-	}
+	
 	.popup .edit_person-wrapper {
 		--scale: 0.8;
 		transform: scale(var(--scale));
 	}
 
-	li {
-		width: 66.4%;
+	/* li {
+		width: 90%;
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
 		align-items: flex-start;
 		padding-left: 43px;
-	}
+	} */
+	
 	main {
 		width: 100%;
 		margin-left: auto;
@@ -343,11 +346,15 @@ button {
 		width: 400px;
 		margin: 0;
 	}
+	.edit-delete-day-wraper {
+		align-items: flex-end;
+	}
 }
 
 @media (min-width: 600px) {
 	li {
 		display: flex;
+		width: 80%;
 		flex-direction: row;
 		place-items: center center;
 		background-color: #fffffe;
@@ -362,7 +369,7 @@ button {
 		margin-left: 43px;
 	}
 	.aboutyear {
-		margin-left: 20px;
+		margin-left: 39px;
 	}
 	.popup .edit_person-wrapper {
 		--scale: 1;
@@ -377,7 +384,15 @@ button {
 }
 
 @media (min-width: 800px) {
+	li {
+		width: 66.4%;
+	}
 	form {
 		display: flex;
+	}
+}
+@media (min-width : 1200px) {
+	.aboutyear {
+		margin-left: -75px;
 	}
 }

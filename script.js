@@ -104,7 +104,6 @@ async function getData() {
         const result =  await editBirthdayPopup(birthdayId);
         console.log("editbirthdat", result);
         if (result) {
-        
             displayData(people);
         }
     }
@@ -135,6 +134,7 @@ async function getData() {
             document.body.appendChild(popup);
             // await wait(10);
             popup.classList.add('open');
+            document.body.style.overflow = "hidden"
 
             popup.addEventListener(
                 'submit',
@@ -155,6 +155,7 @@ async function getData() {
                 'click',
                 () => {
                     destroyPopup(popup); //  resolve(null);
+                    document.body.style.overflow = "visible"
                 },
                 { once: true }
             );
@@ -165,6 +166,7 @@ async function getData() {
                 'click',
                 () => {
                     destroyPopup(popup); //  resolve(null);
+                    document.body.style.overflow = "visible"
                 },
                 { once: true }
             );
@@ -195,14 +197,17 @@ async function getData() {
 
         document.body.appendChild(deleteDiv)
         deleteDiv.classList.add("open");
+        document.body.style.overflow = "hidden"
         deleteDiv.addEventListener("click", (e) => {
             e.preventDefault()
             const deleteButon = e.target.closest("button.delete");
+            document.body.style.overflow = "visible"
             if (deleteButon) {
                 people = filterIdOfPeople;
                 displayData(people);
                 destroyPopup(deleteDiv);
                 tbody.dispatchEvent(new CustomEvent('updateList'));
+                
             }
             const cancelButton = e.target.closest("button.cancel-delete");
             if (cancelButton) {
@@ -218,11 +223,13 @@ async function getData() {
             const idToEdit = editButton.dataset.id;
             console.log(idToEdit);
             editBirthday(idToEdit);
+
         }
         if (e.target.closest('button.delete')) {
             const deleteButton = e.target.closest('li');
             const idToDelete = deleteButton.dataset.id;
             deleteBirthdayPopup(idToDelete);
+            
         }
     }
     tbody.addEventListener('click', handleClick);
@@ -251,22 +258,25 @@ async function getData() {
         document.body.appendChild(popup);
         // await wait(10);
         popup.classList.add('open');
+        document.body.style.overflow = "hidden"
         popup.addEventListener(
             "submit",
             e => {
                 e.preventDefault();
                 const formEl = e.currentTarget;
+                document.body.style.overflow = "visible";
                 const newBirthday = {
                     lastName: formEl.lastname.value,
                     firstName: formEl.firstname.value,
                     birthday: formEl.birthday.value,
                     picture: formEl.image.value,
                     id: Date.now(),
+                    
                 }
                 calcDistanceToBirthday(newBirthday)
                 people.push(newBirthday);
                 console.log(people);
-            
+              
                 displayData(people);
                 destroyPopup(popup)
                 popup.reset()
@@ -278,7 +288,9 @@ async function getData() {
                 'click',
                 () => {
                     destroyPopup(popup);
+                    document.body.style.overflow = "visible"
                 },
+                
                 { once: true }
             );
 

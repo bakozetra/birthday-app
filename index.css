@@ -186,8 +186,8 @@ li {
 #cancel-x {
 	position: absolute;
 	border: none;
-	top: 3rem;
-	right: 3rem;
+	top: 53.5px;
+	right: 63.5px;
 } 
 .want_to_delete {
 	width: 200px;
@@ -249,7 +249,6 @@ li {
 	padding-top: 50px;
 	border: none;
 	border-radius: 5px;
-	box-shadow: 0 0 5px 5px rgba(0, 0, 0, 0.2);
 	transition: all 0.2s;
 	--scale: 0.7;
 	transform: scale(var(--scale));
@@ -352,6 +351,7 @@ button {
 		color: #094067;
 		width: 400px;
 		margin: 0;
+		padding-top: 60px;
 	}
 	.edit-delete-day-wraper {
 		align-items: flex-end;
@@ -379,12 +379,15 @@ button {
 		margin-left: 39px;
 	}
 	.popup .edit_person-wrapper {
+		width: 50%;
+    margin-left: auto;
+    margin-right: auto;
 		--scale: 1;
+		margin-top: 121px;
 		transform: scale(var(--scale));
-		padding-top: 121px;
-		padding-left: 264px;
-   	padding-right: 500px;
+   	/* padding-right: 414px; */
 		padding-bottom: 288px;
+		padding-left: 264px;
 
 	}
 

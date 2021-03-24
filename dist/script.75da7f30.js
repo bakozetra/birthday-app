@@ -125,21 +125,22 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.calcDistanceToBirthday = calcDistanceToBirthday;
 
-function calcDistanceToBirthday(object) {
+function calcDistanceToBirthday(personToCalculate) {
   function calculate_age(dob) {
     var diff_ms = Date.now() - dob.getTime();
     var age_dt = new Date(diff_ms);
     return Math.abs(age_dt.getUTCFullYear() - 1970);
   }
 
-  var year = calculate_age(new Date(object.birthday)) + 1;
-  var newDate = new Date(object.birthday);
+  var year = calculate_age(new Date(personToCalculate.birthday)) + 1; // console.log(year);
+
+  var newDate = new Date(personToCalculate.birthday);
   var month = newDate.toLocaleString('default', {
     month: 'long'
   });
   var dayBirthday = newDate.getDate(); // calculate birday day in between
 
-  var birthday = new Date(object.birthday);
+  var birthday = new Date(personToCalculate.birthday);
   var today = new Date(); //Set current year or the next year if you already had birthday this year
 
   birthday.setFullYear(today.getFullYear());
@@ -149,13 +150,22 @@ function calcDistanceToBirthday(object) {
   } //Calculate difference between days
 
 
-  var daysToBirthday = Math.floor((birthday - today) / (1000 * 60 * 60 * 24));
-  object.birthdayDay = dayBirthday;
-  object.birthdayMonth = month;
-  object.futureAge = year;
-  object.distanceToBirthday = daysToBirthday;
-  console.log(object);
-  return object;
+  var daysToBirthday = Math.floor(Number(birthday - today) / (1000 * 60 * 60 * 24) + 1);
+  console.log(daysToBirthday, "TO BIRTHDAY", birthday);
+  var leftDays = "";
+
+  if (daysToBirthday === 365) {
+    leftDays = 0;
+  } else {
+    leftDays = daysToBirthday;
+  }
+
+  personToCalculate.birthdayDay = dayBirthday;
+  personToCalculate.birthdayMonth = month;
+  personToCalculate.futureAge = year;
+  personToCalculate.distanceToBirthday = leftDays;
+  console.log(personToCalculate);
+  return personToCalculate;
 }
 },{}],"script.js":[function(require,module,exports) {
 "use strict";
@@ -186,22 +196,22 @@ function getData() {
 }
 
 function _getData() {
-  _getData = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {
+  _getData = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee4() {
     var response, data, people, displayData, destroyPopup, _destroyPopup, editBirthday, editBirthdayPopup, deleteBirthdayPopup, handleClick, AddPersonPopup, initLocalStorage, updateLocalStorage;
 
-    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+    return regeneratorRuntime.wrap(function _callee4$(_context4) {
       while (1) {
-        switch (_context3.prev = _context3.next) {
+        switch (_context4.prev = _context4.next) {
           case 0:
             _destroyPopup = function _destroyPopup3() {
-              _destroyPopup = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(popup) {
-                return regeneratorRuntime.wrap(function _callee2$(_context2) {
+              _destroyPopup = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee3(popup) {
+                return regeneratorRuntime.wrap(function _callee3$(_context3) {
                   while (1) {
-                    switch (_context2.prev = _context2.next) {
+                    switch (_context3.prev = _context3.next) {
                       case 0:
                         popup.classList.remove('open'); // wait for 1 second, to let the animation do its work
 
-                        _context2.next = 3;
+                        _context3.next = 3;
                         return wait(1000);
 
                       case 3:
@@ -212,10 +222,10 @@ function _getData() {
 
                       case 5:
                       case "end":
-                        return _context2.stop();
+                        return _context3.stop();
                     }
                   }
-                }, _callee2);
+                }, _callee3);
               }));
               return _destroyPopup.apply(this, arguments);
             };
@@ -242,27 +252,31 @@ function _getData() {
               } //Sort people’s birthdays from the youngest to the oldest.
 
 
+              if (!people) {
+                return;
+              }
+
               var newDataSort = people.slice().sort(function (a, b) {
                 return a.distanceToBirthday - b.distanceToBirthday;
               }); //created html and  map the newDataSort.
 
               var html = newDataSort.map(function (person, index) {
-                return "\n    <li data-id=\"".concat(person.id, "\" class=\"").concat(index % 2 ? 'even' : '', "\">\n     <img src=\"").concat(person.picture, "\" alt=\"").concat(person.firstName + ' ' + person.lastName, "\" class =\"person-image\"/>\n     <div class = \"aboutyear\">\n      <h3 class =\"name\">").concat(person.lastName, " ").concat(person.firstName, "</h3>\n      <p class=\"age\">Turns ").concat(person.futureAge, " years on ").concat(person.birthdayMonth, " on ").concat(person.birthdayDay, " th </p>\n      </div>\n      <p class=\"day\">\n      ").concat(person.distanceToBirthday === 0 ? "\uD83C\uDF82\uD83C\uDF82\uD83C\uDF82" : "in ".concat(person.distanceToBirthday, " days"), "</p>\n      <div class= \"icon\">\n          <button class=\"edit\">\n            <img src=\"./svg/edit.svg\" alt=\"\">\n          </button>\n          <button class=\"delete\">\n            <img src=\"./svg/delete.svg\" alt=\"\">\n          </button>\n      </div>\n    </li>\n  ");
+                return "\n    <li data-id=\"".concat(person.id, "\" class=\"").concat(index % 2 ? 'even' : '', "\">\n        <img src=\"").concat(person.picture, "\" alt=\"").concat(person.firstName + ' ' + person.lastName, "\" class =\"person-image\"/>\n        <div class = \"aboutyear\">\n            <h3 class =\"name\">").concat(person.lastName, " ").concat(person.firstName, "</h3>\n            <p class=\"age\">Turns <b>").concat(person.futureAge, "</b>years on ").concat(person.birthdayMonth, " on ").concat(person.birthdayDay, " th </p>\n        </div>\n        <div class=\"edit-delete-day-wraper\">\n            <p class=\"day\">\n            ").concat(person.distanceToBirthday == 0 ? "\uD83C\uDF82\uD83C\uDF82\uD83C\uDF82" : "in ".concat(person.distanceToBirthday, " days"), "</p>\n            <div class= \"icon\">\n               <button class=\"edit\">\n                <img src=\"./svg/edit.svg\" alt=\"\">\n                </button>\n                <button class=\"delete\">\n                <img src=\"./svg/delete.svg\" alt=\"\">\n               </button>\n           </div>\n        </div>\n    </li>\n  ");
               }).join('');
               tbody.innerHTML = html;
               tbody.dispatchEvent(new CustomEvent('listUpdated'));
             };
 
-            _context3.next = 5;
+            _context4.next = 5;
             return fetch('https://gist.githubusercontent.com/Pinois/e1c72b75917985dc77f5c808e876b67f/raw/b17e08696906abeaac8bc260f57738eaa3f6abb1/birthdayPeople.json');
 
           case 5:
-            response = _context3.sent;
-            _context3.next = 8;
+            response = _context4.sent;
+            _context4.next = 8;
             return response.json();
 
           case 8:
-            data = _context3.sent;
+            data = _context4.sent;
             // empty array to store everything
             people = [];
             people = data;
@@ -279,65 +293,98 @@ function _getData() {
             });
 
             // Function that handle the edit form (editBirthday)
-            editBirthday = function editBirthday(id) {
-              var birthdayId = people.find(function (birthday) {
-                return birthday.id == id;
-              });
-              console.log(birthdayId);
-              var result = editBirthdayPopup(birthdayId);
+            editBirthday = /*#__PURE__*/function () {
+              var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(id) {
+                var birthdayId, result;
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                  while (1) {
+                    switch (_context.prev = _context.next) {
+                      case 0:
+                        birthdayId = people.find(function (birthday) {
+                          return birthday.id == id;
+                        });
+                        console.log(birthdayId);
+                        _context.next = 4;
+                        return editBirthdayPopup(birthdayId);
 
-              if (result) {
-                displayData(result);
-              }
-            };
+                      case 4:
+                        result = _context.sent;
+                        console.log("editbirthdat", result);
+
+                        if (result) {
+                          displayData(people);
+                        }
+
+                      case 7:
+                      case "end":
+                        return _context.stop();
+                    }
+                  }
+                }, _callee);
+              }));
+
+              return function editBirthday(_x2) {
+                return _ref.apply(this, arguments);
+              };
+            }();
 
             editBirthdayPopup = function editBirthdayPopup(person) {
               return new Promise( /*#__PURE__*/function () {
-                var _ref = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee(resolve) {
-                  var popup, skipButton;
-                  return regeneratorRuntime.wrap(function _callee$(_context) {
+                var _ref2 = _asyncToGenerator( /*#__PURE__*/regeneratorRuntime.mark(function _callee2(resolve) {
+                  var birthdayDate, todayDate, popup, skipButton, skipX;
+                  return regeneratorRuntime.wrap(function _callee2$(_context2) {
                     while (1) {
-                      switch (_context.prev = _context.next) {
+                      switch (_context2.prev = _context2.next) {
                         case 0:
+                          birthdayDate = new Date(person.birthday).toISOString().slice(0, 10);
+                          todayDate = new Date().toISOString().slice(0, 10);
                           popup = document.createElement('form');
                           popup.classList.add('popup');
-                          popup.innerHTML = "<fieldset>\n              <h3>Edit</h3>\n              <label>Lastname</label>\n              <input type=\"text\" name=\"lastName\" value=\"".concat(person.lastName, "\"/>\n              <label>Firstname</label>\n              <input type=\"text\" name=\"firstName\" value=\"").concat(person.firstName, "\"/>\n              <label>Birthday</label>\n              <input type=\"date\" id=\"start\" name=\"tripStart\"value=\"2000-01-01\" min=\"2000-01-01\" max=\"2020-12-31\">\n              <button type=\"submit\">Save changes</button>\n            </fieldset>");
-                          skipButton = document.createElement('button');
-                          skipButton.type = 'button'; // so it doesn't submit
-
-                          skipButton.textContent = 'Cancel';
-                          popup.firstElementChild.appendChild(skipButton);
+                          popup.innerHTML = "<fieldset class=\"edit_person-wrapper\">\n              <h3 class=\"edit_person\">Edit ".concat(person.firstName, "</h3>\n              <label>Lastname</label>\n              <input type=\"text\" name=\"lastName\" value=\"").concat(person.lastName, "\"/>\n              <label>Firstname</label>\n              <input type=\"text\" name=\"firstName\" value=\"").concat(person.firstName, "\"/>\n              <label>Birthday</label>\n              <input type=\"date\" id=\"start\" name=\"bithdayDate\" value=\"").concat(birthdayDate, "\" max = \"").concat(todayDate, "\">\n              <div class= \"addChages-cancel-wrapper\">\n                  <button type=\"submit\">Save changes</button>\n                  <button type=\"button\" id=\"cancel-btn\">Cancel</button>\n              </div>\n              <button type=button id=\"cancel-x\">X</button>\n            </fieldset>");
                           document.body.appendChild(popup); // await wait(10);
 
                           popup.classList.add('open');
+                          document.body.style.overflow = "hidden";
                           popup.addEventListener('submit', function (e) {
                             e.preventDefault();
                             person.lastName = e.target.lastName.value;
                             person.firstName = e.target.firstName.value;
-                            person.birthday = e.target.tripStart.value;
-                            resolve();
-                            displayData();
+                            person.birthday = e.target.bithdayDate.value;
+                            var personWithCalculateDate = (0, _utils.calcDistanceToBirthday)(person);
+                            resolve(personWithCalculateDate);
+                            displayData(people);
                             destroyPopup(popup);
                           }, {
                             once: true
                           });
+                          skipButton = document.querySelector('#cancel-btn');
                           skipButton.addEventListener('click', function () {
-                            resolve(null);
-                            destroyPopup(popup);
+                            destroyPopup(popup); //  resolve(null);
+
+                            document.body.style.overflow = "visible";
+                          }, {
+                            once: true
+                          });
+                          skipX = document.querySelector("#cancel-x");
+                          console.log(skipX);
+                          skipX.addEventListener('click', function () {
+                            destroyPopup(popup); //  resolve(null);
+
+                            document.body.style.overflow = "visible";
                           }, {
                             once: true
                           });
 
-                        case 11:
+                        case 14:
                         case "end":
-                          return _context.stop();
+                          return _context2.stop();
                       }
                     }
-                  }, _callee);
+                  }, _callee2);
                 }));
 
-                return function (_x2) {
-                  return _ref.apply(this, arguments);
+                return function (_x3) {
+                  return _ref2.apply(this, arguments);
                 };
               }());
             }; // Function for the delete the about the people .
@@ -348,12 +395,14 @@ function _getData() {
               var filterIdOfPeople = people.filter(function (person) {
                 return person.id != id;
               });
+              console.log(filterIdOfPeople);
               var selectedPerson = people.filter(function (person) {
-                return person.id === id;
+                return person.id == id;
               })[0];
+              console.log(selectedPerson);
               var deleteDiv = document.createElement('div');
               deleteDiv.classList.add('popup');
-              deleteDiv.insertAdjacentHTML('afterbegin', "\n            <fieldset>\n                <h3>Delete ".concat(selectedPerson.firstName, " ").concat(selectedPerson.lastName, "</h3>\n                <p>Are you sure you want to delete this person from the list?</p>\n                <button type=\"submit\" class ='delete'>Delete</button>\n                <button type = \"button\" class =\"cancel-delete\">Cancel</button>\n            </fieldset>\n    "));
+              deleteDiv.insertAdjacentHTML('afterbegin', "\n            <fieldset class =\"want_to_delete\">\n                <h3>Delete ".concat(selectedPerson.firstName, " ").concat(selectedPerson.lastName, "</h3>\n                <p>Are you sure you want to delete this person from the list?</p>\n                <div class=\"deleted_button\">\n                    <button type=\"submit\" class ='delete'>Delete</button>\n                    <button type = \"button\" class =\"cancel-delete\">Cancel</button>\n                </div>\n            </fieldset>\n    "));
               document.body.appendChild(deleteDiv);
               deleteDiv.classList.add("open");
               deleteDiv.addEventListener("click", function (e) {
@@ -395,8 +444,9 @@ function _getData() {
 
             AddPersonPopup = function AddPersonPopup() {
               var popup = document.createElement('form');
+              var todayDate = new Date().toISOString().slice(0, 10);
               popup.classList.add('popup');
-              popup.innerHTML = "\n            <div>\n            <label for=\"firstname\">First Name</label>\n            <input type=\"text\" name=\"firstname\" id=\"firstname\">\n            <label for=\"lastname\">Last name</label>\n            <input type=\"text\" name=\"lastname\" id=\"lastname\">\n            <label for=\"birthday\">Birthday</label>\n            <input type=\"date\" id=\"birthday\" name=\"birthday\" value=\"2000-01-01\" min=\"2000-01-01\" max=\"2020-12-31\">\n            <label for=\"image\">Image</label>\n            <input type=\"url\" name=\"image\">\n            <button type=\"submit\">Add</button>\n            </div>\n        \n            ";
+              popup.innerHTML = "\n            <div class=\"add-form\"> \n                <label for=\"firstname\">First Name</label>\n                <input type=\"text\" name=\"firstname\" id=\"firstname\">\n                <label for=\"lastname\">Last name</label>\n                <input type=\"text\" name=\"lastname\" id=\"lastname\">\n                <label for=\"birthday\">Birthday</label>\n                <input type=\"date\" id=\"birthday\" name=\"birthday\" max = \"".concat(todayDate, "\">\n                <label for=\"image\">Image</label>\n                <input type=\"url\" name=\"image\">\n                <div class=\"add-cancel-wrapper\">\n                    <button type=\"submit\">Add</button>\n                    <button type = \"button\" id =\"cancel-btn\"> Cancel</button>\n                </div>\n            </div>\n        \n            ");
               document.body.appendChild(popup); // await wait(10);
 
               popup.classList.add('open');
@@ -413,16 +463,12 @@ function _getData() {
                 (0, _utils.calcDistanceToBirthday)(newBirthday);
                 people.push(newBirthday);
                 console.log(people);
-                displayData();
+                displayData(people);
                 destroyPopup(popup);
                 popup.reset();
                 tbody.dispatchEvent(new CustomEvent('listUpdated'));
               });
-              var skipButton = document.createElement('button');
-              skipButton.type = 'button'; // so it doesn't submit
-
-              skipButton.textContent = 'Cancel';
-              popup.firstElementChild.appendChild(skipButton);
+              var skipButton = document.querySelector('#cancel-btn');
               skipButton.addEventListener('click', function () {
                 destroyPopup(popup);
               }, {
@@ -453,10 +499,10 @@ function _getData() {
 
           case 27:
           case "end":
-            return _context3.stop();
+            return _context4.stop();
         }
       }
-    }, _callee3);
+    }, _callee4);
   }));
   return _getData.apply(this, arguments);
 }
@@ -490,7 +536,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54772" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61755" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

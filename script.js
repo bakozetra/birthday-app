@@ -116,18 +116,20 @@ async function getData() {
             popup.classList.add('popup');
             popup.innerHTML =
                 `<fieldset class="edit_person-wrapper">
+            <div class="wrapper_div">
               <h3 class="edit_person">Edit ${person.firstName}</h3>
               <label>Lastname</label>
-              <input type="text" name="lastName" value="${person.lastName}"/>
+              <input type="text" name="lastName" value="${person.lastName}" required />
               <label>Firstname</label>
-              <input type="text" name="firstName" value="${person.firstName}"/>
+              <input type="text" name="firstName" value="${person.firstName}" required />
               <label>Birthday</label>
-              <input type="date" id="start" name="bithdayDate" value="${birthdayDate}" max = "${todayDate}">
+              <input type="date" id="start" name="bithdayDate" value="${birthdayDate}" max = "${todayDate}" required >
               <div class= "addChages-cancel-wrapper">
                   <button type="submit">Save changes</button>
                   <button type="button" id="cancel-btn">Cancel</button>
               </div>
-              <button type=button id="cancel-x">X</button>
+           </div>
+           <button type=button id="cancel-x"><img src="./svg/feather_x.svg"></button>
             </fieldset>`;
           
                 
@@ -168,7 +170,6 @@ async function getData() {
                     destroyPopup(popup); //  resolve(null);
                     document.body.style.overflow = "visible"
                 },
-                { once: true }
             );
      
         });
@@ -186,18 +187,22 @@ async function getData() {
         deleteDiv.classList.add('popup');
         deleteDiv.insertAdjacentHTML('afterbegin', `
             <fieldset class ="want_to_delete">
-                <h3>Delete ${selectedPerson.firstName} ${selectedPerson.lastName}</h3>
+            <div class="wrapper_div wrapper_div_delete">
+                <h3 class="name_delete_person">Delete ${selectedPerson.firstName} ${selectedPerson.lastName}</h3>
                 <p>Are you sure you want to delete this person from the list?</p>
                 <div class="deleted_button">
                     <button type="submit" class ='delete'>Delete</button>
                     <button type = "button" class ="cancel-delete">Cancel</button>
                 </div>
+            </div>
+            <button type=button id="cancel-x" class="cancel"><img src="./svg/feather_x.svg"></button>
             </fieldset>
     `);
 
         document.body.appendChild(deleteDiv)
         deleteDiv.classList.add("open");
-        document.body.style.overflow = "hidden"
+        document.body.style.overflow = "hidden";
+        
         deleteDiv.addEventListener("click", (e) => {
             e.preventDefault()
             const deleteButon = e.target.closest("button.delete");
@@ -213,7 +218,12 @@ async function getData() {
             if (cancelButton) {
                 deleteDiv.classList.remove("open");
             }
-        })
+            const skip  = e.target.closest(".cancel");
+            if (skip) {
+                deleteDiv.classList.remove("open");
+            }
+        }) 
+        
     };
 
     // fuction to check the target 
@@ -240,18 +250,22 @@ async function getData() {
         popup.classList.add('popup');
         popup.innerHTML = `
             <div class="add-form"> 
-                <label for="firstname">First Name</label>
-                <input type="text" name="firstname" id="firstname">
+              <div class="wrapper_div">
+                <h3 class="add_new_person"> Add Somebody new </h3>
                 <label for="lastname">Last name</label>
-                <input type="text" name="lastname" id="lastname">
+                <input type="text" name="lastname" id="lastname"  placeholder ="Person's last name" required>
+                <label for="firstname">First Name</label>
+                <input type="text" name="firstname" id="firstname" placeholder ="Person's first name" required>
                 <label for="birthday">Birthday</label>
-                <input type="date" id="birthday" name="birthday" max = "${todayDate}">
+                <input type="date" id="birthday" name="birthday" max = "${todayDate}" required >
                 <label for="image">Image</label>
-                <input type="url" name="image">
+                <input type="url" name="image" required>
                 <div class="add-cancel-wrapper">
                     <button type="submit">Add</button>
-                    <button type = "button" id ="cancel-btn"> Cancel</button>
+                    <button type = "button" id ="cancel-btn">Cancel</button>
                 </div>
+                </div>
+                <button type=button id="cancel-x"><img src="./svg/feather_x.svg"></button>
             </div>
         
             `
@@ -275,8 +289,6 @@ async function getData() {
                 }
                 calcDistanceToBirthday(newBirthday)
                 people.push(newBirthday);
-                console.log(people);
-              
                 displayData(people);
                 destroyPopup(popup)
                 popup.reset()
@@ -290,7 +302,17 @@ async function getData() {
                     destroyPopup(popup);
                     document.body.style.overflow = "visible"
                 },
-                
+
+            );
+
+            const skipX = document.querySelector("#cancel-x")
+            console.log(skipX);
+            skipX.addEventListener(
+                'click',
+                () => {
+                    destroyPopup(popup); //  resolve(null);
+                    document.body.style.overflow = "visible"
+                },
                 { once: true }
             );
 

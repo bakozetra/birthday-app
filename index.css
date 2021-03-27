@@ -72,7 +72,7 @@ header h1 {
 li {
 	display: flex;
 	flex-direction: column;
-  align-items: flex-start;
+	align-items: flex-start;
 	background-color: #fffffe;
 	margin-bottom: 2rem;
 	margin-left: auto;
@@ -82,7 +82,6 @@ li {
 	border-radius: 5px;
 	padding-left: 43px;
 }
-
 
 .searchName {
 	margin-bottom: 1rem;
@@ -109,6 +108,11 @@ li {
 	border: 1px solid #faeee7;
 	color: #594a4e;
 	width: 282px;
+	-webkit-appearance: none;
+	background-image: url(./svg/select_month.svg);
+	background-repeat: no-repeat;
+	background-position-x: 239px;
+	background-position-y: 23px;
 }
 
 .filterName {
@@ -117,6 +121,9 @@ li {
 	color: rgba(9, 64, 103, 1);
 	font-size: var(--font-size-input);
 	line-height: 21px;
+}
+.wrapper-select {
+	padding-top: 2rem;
 }
 .person-image {
 	width: 92px;
@@ -146,20 +153,17 @@ li {
 	color: #ef4565;
 }
 
-.day {
-	font-size: 24px;
-}
-
 .edit {
 	margin-right: 17px;
 }
-.age {
-	font-size: 24px;
+.age , .day {
+	font-size: 20px;
 }
+
 .name {
 	font-size: 0.75rem;
 	color: #272343;
-	font-size: 36px;
+	font-size: 30px;
 	line-height: 43px;
 	color: #000000;
 }
@@ -175,22 +179,51 @@ li {
 	width: 100vw;
 	transition: all 0.25s;
 	top: 0;
-	display: grid;
 	justify-content: center;
-	align-items: center;
 	pointer-events: none;
 	--opacity: 0;
 	opacity: var(--opacity);
+	overflow: auto;
+}
+
+.wrapper_div {
+	display: flex;
+	flex-direction: column;
+	margin: auto;
+	padding: 2rem;
+}
+.wrapper_div label {
+	padding-bottom: 8px;
+
+}
+.wrapper_div input {
+	padding-left: 20px;
+}
+
+
+.wrapper_div_delete {
+	margin-top: inherit;
+	align-items: center;
+	display: block;
 }
 
 #cancel-x {
 	position: absolute;
 	border: none;
-	top: 53.5px;
-	right: 63.5px;
-} 
+	top: 10px;
+	right: -40px;
+	background: none;
+}
 .want_to_delete {
-	width: 200px;
+	border: none;
+}
+.addChages-cancel-wrapper, .add-cancel-wrapper , .deleted_button  {
+	margin-top: 30px;
+}
+
+.popup .want_to_delete {
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .popup button[type="submit"],
@@ -206,11 +239,6 @@ li {
 	font-size: 1.2rem;
 	margin-bottom: 11px;
 	bottom: 197px;
-}
-
-.add-cancel-wrapper {
-	display: flex;
-	justify-content: space-between;
 }
 
 .edit-delete-day-wraper {
@@ -230,7 +258,8 @@ li {
 }
 
 .popup input {
-	width: 264px;
+	max-width: 264px;
+	width: 100%;
 	height: 50px;
 	background: rgba(216, 238, 254, 1);
 	border-radius: 5px;
@@ -241,7 +270,8 @@ li {
 }
 
 .popup .edit_person-wrapper {
-	display: grid;
+	display: flex;
+	flex-direction: column;
 	background: #fffffe;
 	padding-left: 50px;
 	padding-right: 50px;
@@ -250,20 +280,31 @@ li {
 	border: none;
 	border-radius: 5px;
 	transition: all 0.2s;
-	--scale: 0.7;
-	transform: scale(var(--scale));
+	position: relative;
 }
+
 .popup .add-form {
 	display: flex;
 	flex-direction: column;
 	background: #fffffe;
-	padding: 2rem;
+	padding-top: 2rem;
 	border-radius: 5px;
 	transition: all 0.2s;
 }
 .popup.open {
 	--opacity: 1;
 	pointer-events: all;
+}
+
+.popup .edit_person-wrapper,
+.add-form,
+.want_to_delete {
+	margin: auto;
+	height: fit-content;
+	margin-top: 121px;
+	padding-bottom: 50px;
+	margin-bottom: 112px;
+	position: relative;
 }
 
 button img {
@@ -276,6 +317,7 @@ button {
 }
 .filters {
 	width: 85%;
+	max-width: 779px;
 	margin-left: auto;
 	margin-right: auto;
 	display: flex;
@@ -299,7 +341,7 @@ button {
 .delete {
 	cursor: pointer;
 	border-radius: 10px;
-	width: 30px;
+	width: 24px;
 }
 
 .person-image {
@@ -308,60 +350,71 @@ button {
 
 @media (min-width: 400px) {
 	header {
-		width: 58%;
-	}
-	.filters {
-		width: 58%;
+		width: 85%;
+		max-width: 779px;
 	}
 	button img {
 		width: 30px;
 	}
-
-
 	.name,
 	.age {
 		width: 100%;
 	}
-	
-	.popup .edit_person-wrapper {
-		--scale: 0.8;
-		transform: scale(var(--scale));
+	.name {
+		font-size: 36px;
+	}
+	.age , .day {
+		font-size: 24px;
 	}
 
-	/* li {
-		width: 90%;
-		display: flex;
-		flex-direction: row;
-		align-items: flex-start;
-		padding-left: 43px;
-	} */
-	
 	main {
 		width: 100%;
 		margin-left: auto;
 		margin-right: auto;
 	}
 	body {
-		background-color: #e3f6f5;
 		margin: 0;
 	}
-	.edit_person {
+	.edit_person,
+	.name_delete_person,
+	.add_new_person {
 		font-size: 48px;
 		line-height: 57px;
 		color: #094067;
 		width: 400px;
 		margin: 0;
-		padding-top: 60px;
+		padding-top: 112px;
 	}
-	.edit-delete-day-wraper {
-		align-items: flex-end;
+	.name_delete_person,
+	.add_new_person {
+		width: auto;
 	}
+	.name_delete_person {
+		padding-top: 0;
+	}
+
+	.add_new_person {
+		padding-top: 70px;
+	}
+	#cancel-x {
+		top: 53.5px;
+		right: 63.5px;
+	}
+	.popup .edit_person-wrapper,
+	.add-form,
+	.want_to_delete {
+		width: 80%;
+		max-width: 700px;
+		padding: 0;
+		padding-bottom: 189px;
+	}
+
 }
 
 @media (min-width: 600px) {
 	li {
 		display: flex;
-		width: 80%;
+		width: 100%;
 		flex-direction: row;
 		place-items: center center;
 		background-color: #fffffe;
@@ -369,40 +422,57 @@ button {
 		margin-left: auto;
 		margin-right: auto;
 		justify-content: space-between;
-		max-width: 100%;
+		max-width: 779px;
 		padding-left: 0;
 	}
+
 	.person-image {
 		margin-left: 43px;
 	}
+
 	.aboutyear {
-		margin-left: 39px;
-	}
-	.popup .edit_person-wrapper {
-		width: 50%;
-    margin-left: auto;
-    margin-right: auto;
-		--scale: 1;
-		margin-top: 121px;
-		transform: scale(var(--scale));
-   	/* padding-right: 414px; */
-		padding-bottom: 288px;
-		padding-left: 264px;
-
+		padding-left: 39px;
 	}
 
-}
-
-@media (min-width: 800px) {
-	li {
-		width: 66.4%;
+	.edit_person-wrapper h3 {
+		font-size: 48px;
 	}
-	form {
+	.edit-delete-day-wraper {
+		align-items: flex-end;
+	}
+	
+	.popup .edit_person-wrapper,
+	.add-form,
+	.want_to_delete {
+		width: 100%;
+		max-width: 1079px;
+		padding: 0;
+		padding-bottom: 189px;
+	}
+	.wrapper_div_delete {
+		margin-top: inherit;
+		align-items: center;
 		display: flex;
 	}
 }
-@media (min-width : 1200px) {
+
+
+@media (min-width: 864px) {
+	form {
+		display: flex;
+	}
 	.aboutyear {
-		margin-left: -75px;
+		padding-left: 0px;
+	}
+}
+@media (min-width: 930px) {
+	.aboutyear {
+		width: 426px;
+		padding-left: unset;
+	}
+}
+@media (min-width: 1200px) {
+	header {
+		width: 58%;
 	}
 }

@@ -207,7 +207,7 @@ li {
 	display: block;
 }
 
-#cancel-x {
+#cancel-x , .cancel{
 	position: absolute;
 	border: none;
 	top: 10px;
@@ -256,6 +256,7 @@ li {
 	background: rgba(239, 69, 101, 1);
 	margin-right: 20px;
 }
+
 
 .popup input {
 	max-width: 264px;
@@ -396,7 +397,8 @@ button {
 	.add_new_person {
 		padding-top: 70px;
 	}
-	#cancel-x {
+
+	#cancel-x , .cancel {
 		top: 53.5px;
 		right: 63.5px;
 	}

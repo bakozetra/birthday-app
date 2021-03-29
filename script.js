@@ -129,7 +129,7 @@ async function getData() {
                   <button type="button" id="cancel-btn">Cancel</button>
               </div>
            </div>
-           <button type=button id="cancel-x"><img src="./svg/feather_x.svg"></button>
+           <button type = "button" id="cancel-x"><img src="./svg/feather_x.svg"></button>
             </fieldset>`;
           
                 
@@ -195,7 +195,7 @@ async function getData() {
                     <button type = "button" class ="cancel-delete">Cancel</button>
                 </div>
             </div>
-            <button type=button id="cancel-x" class="cancel"><img src="./svg/feather_x.svg"></button>
+            <button class="cancel"><img src="./svg/feather_x.svg"></button>
             </fieldset>
     `);
 
@@ -265,7 +265,7 @@ async function getData() {
                     <button type = "button" id ="cancel-btn">Cancel</button>
                 </div>
                 </div>
-                <button type=button id="cancel-x"><img src="./svg/feather_x.svg"></button>
+                <button type= "button" id="cancel-x"><img src="./svg/feather_x.svg"></button>
             </div>
         
             `
@@ -312,8 +312,9 @@ async function getData() {
                 () => {
                     destroyPopup(popup); //  resolve(null);
                     document.body.style.overflow = "visible"
+                    console.log('hi');
                 },
-                { once: true }
+            
             );
 
     }

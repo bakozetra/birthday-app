@@ -10,7 +10,6 @@ function wait(ms = 0) {
 // Grab the element from html
 const tbody = document.querySelector('ul');
 const Addbutton = document.querySelector(".addButton")
-console.log(Addbutton);
 const searchNameFilter = document.querySelector('.searchName');
 const filterMonthFilter = document.querySelector('.filterMonth');
 
@@ -25,7 +24,6 @@ async function getData() {
     people = people.map(person => calcDistanceToBirthday(person))
 
     function displayData  (people) {
-        console.log(people);
             if (searchNameFilter.value !== '') {
                 people = people.filter(person => {
                     const fullNameLowercase =
@@ -78,7 +76,7 @@ async function getData() {
         tbody.dispatchEvent(new CustomEvent('listUpdated'));
     }
 
-    console.log(people);
+
     // Function that handle the add data (birthday)
 
     searchNameFilter.addEventListener('input', () => displayData(people));
@@ -97,9 +95,7 @@ async function getData() {
     // Function that handle the edit form (editBirthday)
     const editBirthday = async( id) => {
         const birthdayId = people.find((birthday => birthday.id == id));
-        console.log(birthdayId);
         const result =  await editBirthdayPopup(birthdayId);
-        console.log("editbirthdat", result);
         if (result) {
             displayData(people);
         }
@@ -160,7 +156,6 @@ async function getData() {
             );
 
             const skipX = document.querySelector("#cancel-x")
-            console.log(skipX);
             skipX.addEventListener(
                 'click',
                 () => {
@@ -175,11 +170,8 @@ async function getData() {
 
     // Function for the delete the about the people .
     const deleteBirthdayPopup = id => {
-        console.log(id);
         const filterIdOfPeople = people.filter(person => person.id != id);
-        console.log(filterIdOfPeople);
         const selectedPerson = people.filter(person => person.id == id)[0];
-        console.log(selectedPerson);
         let deleteDiv = document.createElement('div');
         deleteDiv.classList.add('popup');
         deleteDiv.insertAdjacentHTML('afterbegin', `
@@ -229,7 +221,6 @@ async function getData() {
         if (e.target.closest('button.edit')) {
             const editButton = e.target.closest('li');
             const idToEdit = editButton.dataset.id;
-            console.log(idToEdit);
             editBirthday(idToEdit);
 
         }
@@ -304,13 +295,11 @@ async function getData() {
             );
 
             const skipX = document.querySelector("#cancel-x")
-            console.log(skipX);
             skipX.addEventListener(
                 'click',
                 () => {
                     destroyPopup(popup); //  resolve(null);
                     document.body.style.overflow = "visible"
-                    console.log('hi');
                 },
             
             );

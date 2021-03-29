@@ -24,8 +24,6 @@ async function getData() {
     people = data;
     people = people.map(person => calcDistanceToBirthday(person))
 
-   
-
     function displayData  (people) {
         console.log(people);
             if (searchNameFilter.value !== '') {
@@ -35,7 +33,6 @@ async function getData() {
                     return fullNameLowercase.includes(searchNameFilter.value.toLowerCase());
                 });
                 }
-      
 
         if (filterMonthFilter.value !== '') {
             people = people.filter(person => {
@@ -70,7 +67,7 @@ async function getData() {
                 <img src="./svg/edit.svg" alt="">
                 </button>
                 <button class="delete">
-                <img src="./svg/delete.svg" alt="">
+                <img src="./svg/feather_delete.svg" alt="">
                </button>
            </div>
         </div>
@@ -132,7 +129,6 @@ async function getData() {
            <button type = "button" id="cancel-x"><img src="./svg/feather_x.svg"></button>
             </fieldset>`;
           
-                
             document.body.appendChild(popup);
             // await wait(10);
             popup.classList.add('open');
@@ -149,6 +145,7 @@ async function getData() {
                     resolve(personWithCalculateDate);
                     displayData(people)
                     destroyPopup(popup);
+                    document.body.style.overflow = "visible"
                 }, { once: true }
             );
 
@@ -206,12 +203,13 @@ async function getData() {
         deleteDiv.addEventListener("click", (e) => {
             e.preventDefault()
             const deleteButon = e.target.closest("button.delete");
-            document.body.style.overflow = "visible"
+          
             if (deleteButon) {
                 people = filterIdOfPeople;
                 displayData(people);
                 destroyPopup(deleteDiv);
                 tbody.dispatchEvent(new CustomEvent('updateList'));
+                document.body.style.overflow = "visible"
                 
             }
             const cancelButton = e.target.closest("button.cancel-delete");

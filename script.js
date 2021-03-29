@@ -203,13 +203,13 @@ async function getData() {
         deleteDiv.addEventListener("click", (e) => {
             e.preventDefault()
             const deleteButon = e.target.closest("button.delete");
-          
+            document.body.style.overflow = "visible"
             if (deleteButon) {
                 people = filterIdOfPeople;
                 displayData(people);
                 destroyPopup(deleteDiv);
                 tbody.dispatchEvent(new CustomEvent('updateList'));
-                document.body.style.overflow = "visible"
+              
                 
             }
             const cancelButton = e.target.closest("button.cancel-delete");

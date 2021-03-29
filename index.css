@@ -82,6 +82,9 @@ li {
 	border-radius: 5px;
 	padding-left: 43px;
 }
+ button {
+	cursor: pointer;
+ }
 
 .searchName {
 	margin-bottom: 1rem;
@@ -340,7 +343,6 @@ button {
 
 .edit,
 .delete {
-	cursor: pointer;
 	border-radius: 10px;
 	width: 30px;
 }

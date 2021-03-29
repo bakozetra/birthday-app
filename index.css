@@ -194,6 +194,7 @@ li {
 	flex-direction: column;
 	margin: auto;
 	padding: 2rem;
+	
 }
 .wrapper_div label {
 	padding-bottom: 8px;
@@ -457,6 +458,10 @@ button {
 		margin-top: inherit;
 		align-items: center;
 		display: flex;
+	}
+	.wrapper_div {
+		padding: 0;
+		padding-right: 82px;
 	}
 }
 

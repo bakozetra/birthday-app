@@ -56,8 +56,8 @@ async function getData() {
     <li data-id="${person.id}" class="${index % 2 ? 'even' : ''}">
         <img src="${person.picture}" alt="${person.firstName + ' ' + person.lastName}" class ="person-image"/>
         <div class = "aboutyear">
-            <h3 class ="name">${person.lastName} ${person.firstName}</h3>
-            <p class="age">Turns <b>${person.futureAge}</b>years on ${person.birthdayMonth} on ${person.birthdayDay} th </p>
+            <h3 class ="name">${person.firstName} ${person.lastName} </h3>
+            <p class="age">Turns <b>${person.futureAge}</b> years on ${person.birthdayMonth} on ${person.birthdayDay} th </p>
         </div>
         <div class="edit-delete-day-wraper">
             <p class="day">
@@ -114,11 +114,11 @@ async function getData() {
             popup.innerHTML =
                 `<fieldset class="edit_person-wrapper">
             <div class="wrapper_div">
-              <h3 class="edit_person">Edit ${person.firstName}</h3>
-              <label>Lastname</label>
-              <input type="text" name="lastName" value="${person.lastName}" required />
+              <h3 class="edit_person">Edit ${person.firstName} ${person.lastName} </h3>
               <label>Firstname</label>
               <input type="text" name="firstName" value="${person.firstName}" required />
+              <label>Lastname</label>
+              <input type="text" name="lastName" value="${person.lastName}" required />
               <label>Birthday</label>
               <input type="date" id="start" name="bithdayDate" value="${birthdayDate}" max = "${todayDate}" required >
               <div class= "addChages-cancel-wrapper">

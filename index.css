@@ -109,13 +109,18 @@ li {
 	height: 50px;
 	border-radius: 5px;
 	border: 1px solid #faeee7;
-	color: #594a4e;
+	font-weight: 500;
+  color: 	#5F6C7B;
 	width: 282px;
 	-webkit-appearance: none;
 	background-image: url(./svg/select_month.svg);
 	background-repeat: no-repeat;
 	background-position-x: 239px;
 	background-position-y: 23px;
+}
+::placeholder, select {
+	color: #5f6c7b;
+	font-weight: var(--font-weight);
 }
 
 .filterName {

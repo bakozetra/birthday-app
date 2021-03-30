@@ -22,10 +22,7 @@
 	--font-style-normal: normal;
 	--font-weight-bold: bold;
 	--font-weight: 500;
-  
 }
-
-
 
 html {
 	width: 100%;
@@ -37,6 +34,10 @@ body {
 	font-family: var(--font-family), sans-serif ;
 	font-style: var(--font-style-normal);
 	font-weight: var(--font-weight);
+}
+* {
+	font-family: var(--font-family), sans-serif ;
+	font-style: var(--font-style-normal);
 }
 
 ul {
@@ -104,6 +105,7 @@ li {
 }
  button {
 	cursor: pointer;
+	font-family: 'CustomFont';
  }
 
 .searchName {
@@ -125,7 +127,6 @@ li {
 	line-height: 21px;
 }
 .filterMonth {
-	padding: 0.5rem 0.5rem;
 	height: 50px;
 	border-radius: 5px;
 	border: 1px solid #faeee7;
@@ -430,6 +431,7 @@ button {
 
 	.add_new_person {
 		padding-top: 70px;
+	  padding-bottom: 12px;
 	}
 
 	#cancel-x , .cancel {

@@ -241,9 +241,9 @@ async function getData() {
             <div class="add-form"> 
               <div class="wrapper_div">
                 <h3 class="add_new_person"> Add Somebody new </h3>
-                <label for="lastname">Last name</label>
+                <label for="lastname">Lastname</label>
                 <input type="text" name="lastname" id="lastname"  placeholder ="Person's last name" required>
-                <label for="firstname">First Name</label>
+                <label for="firstname">Firstname</label>
                 <input type="text" name="firstname" id="firstname" placeholder ="Person's first name" required>
                 <label for="birthday">Birthday</label>
                 <input type="date" id="birthday" name="birthday" max = "${todayDate}" required >

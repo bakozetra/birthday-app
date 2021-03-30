@@ -1,11 +1,31 @@
+@font-face {
+	font-family: "CustomFont";
+	src : url("./fonts/Rubik-Regular.woff");
+	font-weight: 400;
+}
+@font-face {
+	font-family: "CustomFont";
+	src : url("./fonts/Rubik-Medium.woff");
+	font-weight: var(--font-weight);
+}
+
+@font-face {
+	font-family: "CustomFont";
+	src : url("./fonts/Rubik-Bold.woff");
+	font-weight: 700;
+}
+
 :root {
 	--main-color: rgba(216, 238, 254, 1);
 	--font-size-input: 18px;
-	--font-family: Rubik;
+	--font-family: "CustomFont";
 	--font-style-normal: normal;
 	--font-weight-bold: bold;
 	--font-weight: 500;
+  
 }
+
+
 
 html {
 	width: 100%;
@@ -14,7 +34,7 @@ html {
 body {
 	background: var(--main-color);
 	margin: 0;
-	font-family: var(--font-family);
+	font-family: var(--font-family), sans-serif ;
 	font-style: var(--font-style-normal);
 	font-weight: var(--font-weight);
 }
@@ -201,9 +221,16 @@ li {
 	padding: 2rem;
 	
 }
+.wrapper_div label , input , select {
+	font-family: Rubik;
+	font-style: normal;
+	font-weight: var(--font-weight);
+	font-size: 18px;
+	line-height: 21px;
+	color: #094067;
+}
 .wrapper_div label {
 	padding-bottom: 8px;
-
 }
 .wrapper_div input {
 	padding-left: 20px;
@@ -273,7 +300,6 @@ li {
 	height: 50px;
 	background: rgba(216, 238, 254, 1);
 	border-radius: 5px;
-	font-size: 1rem;
 	border: none;
 	outline: none;
 	margin-bottom: 20px;
@@ -390,7 +416,7 @@ button {
 		font-size: 48px;
 		line-height: 57px;
 		color: #094067;
-		width: 400px;
+		width: 500px;
 		margin: 0;
 		padding-top: 112px;
 	}
@@ -446,6 +472,7 @@ button {
 
 	.edit_person-wrapper h3 {
 		font-size: 48px;
+		padding-bottom: 12px;
 	}
 	.edit-delete-day-wraper {
 		align-items: flex-end;
@@ -466,7 +493,7 @@ button {
 	}
 	.wrapper_div {
 		padding: 0;
-		padding-right: 82px;
+		padding-right: 46px;
 	}
 }
 
